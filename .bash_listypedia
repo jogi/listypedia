@@ -1,0 +1,2 @@
+export DATABASE_URL=postgres://listypedia:listypedia@localhost:5432/listypedia
+export DEBUG=True

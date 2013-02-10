@@ -1,3 +1,4 @@
+import os
 from django.conf.urls import patterns, include, url
 
 site_media = os.path.join(os.path.dirname(__file__), '../site_media')
