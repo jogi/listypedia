@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+	<h1>Add Item to {{ list.name }}</h1>
+</div>
+<form class="form-horizontal" action="/list/{{ list.id }}/item/add/" method="POST">
+	{% csrf_token %}
+    <div class="control-group">
+        <label class="control-label" for="name">Name</label>
+        <div class="controls">
+            <input class="input-xxlarge" type="text" id="name" name="name" maxlength="300" placeholder="Clever name for the item" /><span class="help-inline">{{ form.name.errors }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="url">URL</label>
+        <div class="controls">
+            <input class="input-xxlarge" type="text" id="url" name="url" maxlength="300" placeholder="Can I haz a hyperlink to the itme?" /><span class="help-inline">{{ form.url.errors }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="description">Description</label>
+        <div class="controls">
+            <textarea class="input-xxlarge" id="description" name="description" maxlength="300" rows="5" placeholder="Synopsis about the item and why you are adding it"></textarea><span class="help-inline">{{ form.description.errors }}</span>
+        </div>
+    </div>
+    <div class="form-actions">
+	    <button type="submit" class="btn btn-primary btn-large btn-flat">Add Item</button>
+    </div>
+</form>
+{% endblock %}

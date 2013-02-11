@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+	<h1>Login</h1>
+</div>
+{% if messages %}
+<div class="alert alert-warning">
+    {% for message in messages %}
+        {{ message }}<br/>
+    {% endfor %}
+</div>
+{% endif %}
+<form class="form-horizontal" action="/login/" method="POST">
+	{% csrf_token %}
+    <div class="control-group">
+        <label class="control-label" for="email">Email</label>
+        <div class="controls">
+            <input type="text" id="email" name="email" placeholder="email@domain.com" /><span class="help-inline">{{ form.email.errors }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="password">Password</label>
+        <div class="controls">
+            <input type="password" id="password" name="password" placeholder="Password" /><span class="help-inline">{{ form.password.errors }}</span>
+        </div>
+    </div>
+    <div class="form-actions">
+	    <button type="submit" class="btn btn-primary btn-large btn-flat">Submit</button>
+    </div>
+</form>
+{% endblock %}

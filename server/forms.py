@@ -1,16 +1,18 @@
+# forms
+
 from django import forms
 from django.contrib.auth.models import User
-from models import List, Item
 
 
-class ListForm(forms.ModelForm):
-    class Meta:
-        model = List
+class ListForm(forms.Form):
+    name = forms.CharField(max_length=300, required=True)
+    description = forms.CharField(required=False)
 
 
-class ItemForm(forms.ModelForm):
-    class Meta:
-        model = Item
+class ItemForm(forms.Form):
+    name = forms.CharField(max_length=300, required=True)
+    description = forms.CharField(required=False)
+    url = forms.URLField(max_length=300, required=False)
 
 
 class UserForm(forms.Form):
@@ -35,4 +37,8 @@ class UserForm(forms.Form):
         except User.DoesNotExist:
             return email
         raise forms.ValidationError(u'User with %s email already exists' % email)
-        
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(required=True)

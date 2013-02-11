@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="marketing">
+	<h1>Create curated list of items with Listypedia.</h1>
+	<p class="marketing-byline">Create lists about places to visit, good restaurants, open source components. Anything that can be a list goes here.</p>
+	<br/>
+	<a class="btn btn-primary btn-large btn-flat" href="/list/create/">Create List</a>
+</div>
+<hr class="soften">
+<ul class="nav nav-pills" id="home">
+	<li class="active"><a data-toggle="tab" href="#followed">Followed Lists</a></li>
+	<li><a data-toggle="tab" href="#your">Your Lists</a></li>
+</ul>
+ 
+<div class="tab-content">
+	<div class="tab-pane active" id="followed"><p class="lead">Nothing. Yet.</p></div>
+	<div class="tab-pane" id="your"><p class="lead">Nothing. Yet.</p></div>
+</div>
+{% endblock %}

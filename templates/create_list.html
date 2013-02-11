@@ -1,7 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="/create_list/" method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
+<div class="page-header">
+	<h1>Create List</h1>
+</div>
+<form class="form-horizontal" action="/list/create/" method="POST">
+	{% csrf_token %}
+    <div class="control-group">
+        <label class="control-label" for="name">Name</label>
+        <div class="controls">
+            <input class="input-xxlarge" type="text" id="name" name="name" maxlength="300" placeholder="New List" /><span class="help-inline">{{ form.name.errors }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="description">Description</label>
+        <div class="controls">
+            <textarea class="input-xxlarge" id="description" name="description" maxlength="300" rows="5" placeholder="What is this list about?"></textarea><span class="help-inline">{{ form.description.errors }}</span>
+        </div>
+    </div>
+    <div class="form-actions">
+	    <button type="submit" class="btn btn-primary btn-large btn-flat">Create List</button>
+    </div>
 </form>
 {% endblock %}

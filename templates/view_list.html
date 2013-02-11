@@ -1,3 +1,30 @@
 {% extends "base.html" %}
+{% load humanize %}
 {% block content %}
+    {% if list %}
+    <div>
+        <p class="pull-right"><a class="btn btn-primary btn-large btn-flat" href="/list/{{ list.id }}/item/add/"><i class="icon-plus icon-white"></i> Add Item</a></p>
+        <h1>{{ list.name }}</h1>
+        <p class="lead">
+            {{ list.description }}
+        </p>
+    </div>
+    <hr>
+        {% if items %}
+            {% for item in items %}
+                <div>
+                    <h3>
+                        {% if item.url %}
+                            <a href="{{ item.url }}">{{ item.name }}</a>
+                        {% else %}
+                            {{ item.name }}
+                        {% endif %}
+                    </h3>
+                    <p>{{ item.description }}</p>
+                    {{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}}
+                </div>
+                <hr>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
 {% endblock %}
