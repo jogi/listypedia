@@ -3,3 +3,5 @@ venv
 *.pot
 *.pyc
 local_settings.py
+.pydevproject
+.project
