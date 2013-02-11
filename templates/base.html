@@ -33,9 +33,9 @@
                         <div class="nav-collapse collapse">
                             <ul class="nav pull-right">
                                 {% if user.is_authenticated %}
-                                <li><a class="btn btn-primary btn-flat" href="/logout/"><i class="icon-user icon-white"></i>Sign Out</a></li>
+                                <li><a href="/logout/"><i class="icon-user"></i> Sign Out</a></li>
                                 {% else %}
-                                <li><a class="btn btn-primary btn-flat" href="/login/"><i class="icon-user icon-white"></i>Sign In</a></li>
+                                <li><a href="/login/"><i class="icon-user"></i> Sign In</a></li>
                                 {% endif %}
                             </ul>
                         </div>

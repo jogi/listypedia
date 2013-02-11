@@ -14,14 +14,14 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
-    return render_to_response('index.html')
+    return render(request, 'index.html')
 
 
 def home(request):
     your_lists = List.objects.filter(user__id=request.user.id)
     followed_lists = List.objects.filter(user__id=request.user.id)
 
-    return render_to_response('home.html', {'your_lists': your_lists, 'followed_lists': followed_lists})
+    return render(request, 'home.html', {'your_lists': your_lists, 'followed_lists': followed_lists})
 
 
 def create_list(request):
@@ -87,7 +87,7 @@ def view_list(request, list):
         items = Item.objects.filter(list=list)
     except List.DoesNotExist:
         raise Http404
-    return render_to_response('view_list.html', {'list': list, 'items': items})
+    return render(request, 'view_list.html', {'list': list, 'items': items})
 
 
 def add_item(request, list):
@@ -138,12 +138,12 @@ def login(request):
                     return HttpResponseRedirect('/home/')
                 else:
                     messages.append("Email or password incorrect")
-                    return render_to_response('login.html', {'form': form, 'messages': messages})
+                    return render(request, 'login.html', {'form': form, 'messages': messages})
             else:
                 messages.append("Email or password incorrect")
-                return render_to_response('login.html', {'form': form, 'messages': messages})
+                return render(request, 'login.html', {'form': form, 'messages': messages})
         else:
-            return render_to_response('login.html', {'form':form})
+            return render(request, 'login.html', {'form':form})
 
         
 def logout(request):
