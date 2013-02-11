@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from forms import ListForm,UserForm
 import sys, traceback
 import logging
+import emailutil
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -47,6 +48,7 @@ def signup(request):
             user.first_name = first_name
             user.last_name = last_name
             user.save()
+            emailutil.send_welcome_email(user)
             return HttpResponseRedirect('/') # Redirect after POST
         else:
             return render(request, 'signup.html', {

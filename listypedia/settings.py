@@ -163,3 +163,7 @@ LOGGING = {
         },
     }
 }
+
+AWS_ACCESS_KEY_ID = 'AKIAIFDTEKEQWMJIIBWQ'
+AWS_SECRET_ACCESS_KEY = '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'
+EMAIL_BACKEND = 'django_ses.SESBackend'
