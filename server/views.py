@@ -42,7 +42,7 @@ def create_list(request):
             user = request.user
             list = List.objects.create(name=name, slug = slug, description=description, user=user)
             if list:
-                return HttpResponseRedirect('/list/%s' % list.pk)
+                return HttpResponseRedirect('/list/%s' % list.slug)
         else:
             return render(request, 'create_list.html', {'form': form})
     else:
@@ -92,7 +92,7 @@ def view_list(request, list):
 
 def add_item(request, list):
     logger.info("In add_item")
-    list = List.objects.get(pk=list)
+    list = List.objects.get(slug=list)
     if request.method == 'GET':
         form = ItemForm()
         return render(request, 'add_item.html', {'form': form, 'list': list})
@@ -105,7 +105,7 @@ def add_item(request, list):
             user = request.user
             item = Item.objects.create(name=name, description=description, url=url, list=list, user=user)
             if item:
-                return HttpResponseRedirect('/list/%s' % list.id)
+                return HttpResponseRedirect('/list/%s' % list.slug)
         else:
             return render(request, 'add_item.html', {'form': form})
 
@@ -146,6 +146,6 @@ def login(request):
             return render_to_response('login.html', {'form':form})
 
         
-def logout_user(request):
+def logout(request):
     auth.logout(request)
-    return redirect("/")
+    return HttpResponseRedirect("/")

@@ -2,29 +2,43 @@
 {% load humanize %}
 {% block content %}
     {% if list %}
-    <div>
-        <p class="pull-right"><a class="btn btn-primary btn-large btn-flat" href="/list/{{ list.id }}/item/add/"><i class="icon-plus icon-white"></i> Add Item</a></p>
+    <div class="marketing">
         <h1>{{ list.name }}</h1>
-        <p class="lead">
-            {{ list.description }}
-        </p>
+        <p class="marketing-byline">{{ list.description }}</p>
     </div>
     <hr>
-        {% if items %}
-            {% for item in items %}
-                <div>
-                    <h3>
-                        {% if item.url %}
-                            <a href="{{ item.url }}">{{ item.name }}</a>
-                        {% else %}
-                            {{ item.name }}
-                        {% endif %}
-                    </h3>
-                    <p>{{ item.description }}</p>
-                    {{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}}
-                </div>
-                <hr>
-            {% endfor %}
-        {% endif %}
+    <div class="row">
+        <div class="span9">
+            {% if items %}
+                {% for item in items %}
+                    <div>
+                        <h3>
+                            {% if item.url %}
+                                <a href="{{ item.url }}">{{ item.name }}</a>
+                            {% else %}
+                                {{ item.name }}
+                            {% endif %}
+                        </h3>
+                        <p>{{ item.description }}</p>
+                        {{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}}
+                    </div>
+                    <hr>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="span3">
+            <a class="btn btn-primary btn-large btn-flat btn-block" href="/list/{{ list.slug }}/item/add/"><i class="icon-plus icon-white"></i> Add Item</a>
+            <br>
+            <h4>Created By</h4>
+            {{ list.user.first_name }} {{ list.user.last_name}}
+            {% if collabarators %}
+                <br>
+                <h4>Collabarators</h4>
+                {% for collabarator in collaborators %}
+                    {{ collabarator.user.first_name }} {{ collabarator.user.last_name }}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
     {% endif %}
 {% endblock %}
