@@ -13,6 +13,7 @@ class BaseModel(models.Model):
 
 class List(BaseModel):
     name = models.CharField(max_length=300, null=False)
+    slug = models.SlugField(max_length=300, null=False, unique = True,db_index = True)
     description = models.TextField()
     user = models.ForeignKey(User, null=False)
     privacy_level = models.IntegerField(default=1)

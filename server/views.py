@@ -1,12 +1,12 @@
 import logging
 import emailutil
 
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.contrib import auth
 from forms import ListForm, ItemForm, UserForm, LoginForm
-
+from django.template.defaultfilters import slugify
 from server.models import List, Item
 
 # Get an instance of a logger
@@ -36,10 +36,11 @@ def create_list(request):
         form = ListForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
+            slug = slugify(name)
             description = form.cleaned_data['description']
             print request.user.id
             user = request.user
-            list = List.objects.create(name=name, description=description, user=user)
+            list = List.objects.create(name=name, slug = slug, description=description, user=user)
             if list:
                 return HttpResponseRedirect('/list/%s' % list.pk)
         else:
@@ -68,7 +69,7 @@ def signup(request):
             user.first_name = first_name
             user.last_name = last_name
             user.save()
-            emaiutil.send_welcome_email(user)
+            emailutil.send_welcome_email(user)
             user = auth.authenticate(username=user.username, password=user.password)
             if user:
                 auth.login(request, user)
@@ -82,7 +83,7 @@ def signup(request):
 
 def view_list(request, list):
     try:
-        list = List.objects.get(pk=list)
+        list = List.objects.get(slug=list)
         items = Item.objects.filter(list=list)
     except List.DoesNotExist:
         raise Http404
