@@ -13,6 +13,6 @@ def send_welcome_email(user):
     to.append(user.email)
     msg = EmailMultiAlternatives(subject, email_msg, from_email, to)
     msg.content_subtype = "html" 
-    msg.send()
+    msg.send(fail_silently=True)
     
     
