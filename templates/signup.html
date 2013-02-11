@@ -1,7 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="/create_list/" method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
+<div class="page-header">
+	<h1>Sign Up</h1>
+</div>
+<div class="alert alert-info">
+    All fields are required.
+</div>
+<form class="form-horizontal" action="/signup/" method="POST">
+	{% csrf_token %}
+    <div class="control-group">
+        <label class="control-label" for="first_name">First Name</label>
+        <div class="controls">
+            <input type="text" id="first_name" name="first_name" maxlength="30" placeholder="Frank" /><span class="help-inline">{{ form.first_name.errors }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="last_name">Last Name</label>
+        <div class="controls">
+            <input type="text" id="last_name" name="last_name" maxlength="30" placeholder="Chu" /><span class="help-inline">{{ form.last_name.errors }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="username">Username</label>
+        <div class="controls">
+            <input type="text" id="username" name="username" maxlength="30" placeholder="frankchu" /><span class="help-inline">{{ form.username.errors }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="email">Email</label>
+        <div class="controls">
+            <input type="text" id="email" placeholder="email@domain.com" /><span class="help-inline">{{ form.email.errors }}</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="password">Password</label>
+        <div class="controls">
+            <input type="password" id="password" name="password" placeholder="Password" /><span class="help-inline">{{ form.password.errors }}</span>
+        </div>
+    </div>
+    <div class="form-actions">
+	    <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </form>
 {% endblock %}

@@ -34,6 +34,14 @@ def signup(request):
         })
     elif request.method == 'POST':
         logger.info("saving a new list")
+        form = UserForm(request.POST)
+        if form.is_valid():
+            print "success"
+        else:
+            return render(request, 'signup.html', {
+                'form': form,
+            })  
+
     else:
         logger.info("invalid operation")
     
