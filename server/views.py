@@ -1,4 +1,6 @@
 from django.shortcuts  import render_to_response, redirect, render
+from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 from forms import ListForm,UserForm
 import sys, traceback
 import logging
@@ -36,7 +38,16 @@ def signup(request):
         logger.info("saving a new list")
         form = UserForm(request.POST)
         if form.is_valid():
-            print "success"
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+            return HttpResponseRedirect('/') # Redirect after POST
         else:
             return render(request, 'signup.html', {
                 'form': form,
