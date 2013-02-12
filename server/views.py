@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from forms import ListForm, ItemForm, UserForm, LoginForm
 from server.models import List, Item
-
+from django.contrib.auth.decorators import login_required
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ def home(request):
         'followed_lists': followed_lists
     })
 
-
+@login_required
 def create_list(request):
     if request.method == 'GET':
         logger.info("creating new list form")
@@ -95,7 +95,7 @@ def view_list(request, slug):
         'items': items
     })
 
-
+@login_required
 def add_item(request, slug):
     logger.info("In add_item")
     list = List.objects.get(slug=slug)
@@ -117,14 +117,15 @@ def add_item(request, slug):
                 return HttpResponseRedirect('/list/%s' % list.slug)
         else:
             return render(request, 'add_item.html', {
-                'form': form
+                'form': form,
+                'list': list
             })
 
-
+@login_required
 def add_collabarator(request):
     logger.info("In add_collabarator")
 
-
+@login_required
 def add_follower(request):
     logger.info("In follow_list")
 
