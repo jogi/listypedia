@@ -22,10 +22,9 @@ class List(BaseModel):
     description = models.TextField()
     user = models.ForeignKey(User, null=False)
     privacy_level = models.IntegerField(default=1)
+    search_index = VectorField()
 
     objects = managers.ListManager()
-
-    search_index = VectorField()
     sobjects = SearchManager(
         fields=('name', 'description'),
         config='pg_catalog.english',  # this is default
@@ -40,8 +39,9 @@ class Item(BaseModel):
     url = models.CharField(max_length=300)
     user = models.ForeignKey(User, null=False)
     list = models.ForeignKey(List, null=False)
-
     search_index = VectorField()
+
+    objects = managers.ItemManager()
     sobjects = SearchManager(
         fields=('name', 'description', 'url'),
         config='pg_catalog.english',  # this is default

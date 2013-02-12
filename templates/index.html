@@ -4,8 +4,21 @@
 
     <h1 class="logo lobster"><img src="/site_media/images/listypedia-list-66.png">Listypedia</h1>
     <p class="marketing-byline">Social, Curated lists.</p>
-    <hr class="soften">
-    <div class="row-fluid">
+    <br>
+    <div class="row">
+        <div class="span4 offset4">
+            <form class="form-search" action="/search/" method="POST">
+                {% csrf_token %}
+                <div class="input-prepend input-append">
+                    <span class="add-on"><i class="icon-search"></i></span>
+                    <input type="text" name="q" class="span3 appendedPrependedInput">
+                    <button type="submit" class="btn">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="span4 offset2">
             <h2>Social</h2>
             <p>Listypedia is simple way to create and manage lists. It enables the users to share list with friends and colleagues and also invite them to collaborate.</p>

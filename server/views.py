@@ -1,7 +1,7 @@
 import logging
 import emailutil
 
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.contrib import auth
@@ -20,7 +20,10 @@ def home(request):
     your_lists = List.objects.filter(user=request.user)
     followed_lists = List.objects.filter(user=request.user)
 
-    return render(request, 'home.html', {'your_lists': your_lists, 'followed_lists': followed_lists})
+    return render(request, 'home.html', {
+        'your_lists': your_lists,
+        'followed_lists': followed_lists
+    })
 
 
 def create_list(request):
@@ -41,7 +44,9 @@ def create_list(request):
             if list:
                 return HttpResponseRedirect('/list/%s' % list.slug)
         else:
-            return render(request, 'create_list.html', {'form': form})
+            return render(request, 'create_list.html', {
+                'form': form
+            })
     else:
         logger.info("invalid operation")
 
@@ -70,27 +75,35 @@ def signup(request):
             auth.login(request, user)
             return HttpResponseRedirect('/home/')  # Redirect after POST
         else:
-            return render(request, 'signup.html', {'form': form})
+            return render(request, 'signup.html', {
+                'form': form
+            })
 
     else:
         logger.info("invalid operation")
 
 
-def view_list(request, list):
+def view_list(request, slug):
     try:
-        list = List.objects.get(slug=list)
+        list = List.objects.get(slug=slug)
         items = Item.objects.filter(list=list)
     except List.DoesNotExist:
         raise Http404
-    return render(request, 'view_list.html', {'list': list, 'items': items})
+    return render(request, 'view_list.html', {
+        'list': list,
+        'items': items
+    })
 
 
-def add_item(request, list):
+def add_item(request, slug):
     logger.info("In add_item")
-    list = List.objects.get(slug=list)
+    list = List.objects.get(slug=slug)
     if request.method == 'GET':
         form = ItemForm()
-        return render(request, 'add_item.html', {'form': form, 'list': list})
+        return render(request, 'add_item.html', {
+            'form': form,
+            'list': list
+        })
     elif request.method == 'POST':
         form = ItemForm(request.POST)
         if form.is_valid():
@@ -102,7 +115,9 @@ def add_item(request, list):
             if item:
                 return HttpResponseRedirect('/list/%s' % list.slug)
         else:
-            return render(request, 'add_item.html', {'form': form})
+            return render(request, 'add_item.html', {
+                'form': form
+            })
 
 
 def add_collabarator(request):
@@ -119,7 +134,7 @@ def login(request):
         if request.user.is_authenticated():
             return HttpResponseRedirect('/home/')
         else:
-            return render_to_response('login.html')
+            return render(request, 'login.html')
     elif request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -133,14 +148,32 @@ def login(request):
                     return HttpResponseRedirect('/home/')
                 else:
                     messages.append("Email or password incorrect")
-                    return render(request, 'login.html', {'form': form, 'messages': messages})
+                    return render(request, 'login.html', {
+                        'form': form,
+                        'messages': messages
+                    })
             else:
                 messages.append("Email or password incorrect")
-                return render(request, 'login.html', {'form': form, 'messages': messages})
+                return render(request, 'login.html', {
+                    'form': form,
+                    'messages': messages
+                })
         else:
-            return render(request, 'login.html', {'form': form})
+            return render(request, 'login.html', {
+                'form': form
+            })
 
 
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
+
+
+def search(request):
+    print repr(request.POST)
+    query = request.POST['q']
+    lists = List.sobjects.search(query)
+    return render(request, 'search.html', {
+        'lists': lists,
+        'query': query
+    })

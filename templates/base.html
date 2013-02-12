@@ -32,12 +32,17 @@
                         <a href="/" class="brand lobster">Listypedia</a>
                         <div class="nav-collapse collapse">
                             <ul class="nav pull-right">
+                                <li class="divider-vertical"></li>
                                 {% if user.is_authenticated %}
                                 <li><a href="/logout/"><i class="icon-user"></i> Sign Out</a></li>
                                 {% else %}
                                 <li><a href="/login/"><i class="icon-user"></i> Sign In</a></li>
                                 {% endif %}
                             </ul>
+                            <form action="/search/" method="POST" class="navbar-search pull-right">
+                                {% csrf_token %}
+                                <input type="text" name="q" placeholder="Search" class="search-query span3">
+                            </form>
                         </div>
                         <!--/.nav-collapse -->
                     </div>

@@ -7,3 +7,8 @@ class ListManager(models.Manager):
     def create_list(self, name, description, user):
         slug = slugify(name)
         return super(ListManager, self).create(name=name, slug = slug, description=description, user=user)
+
+
+class ItemManager(models.Manager):
+    def create_item(self):
+        return super(ItemManager, self).create()
