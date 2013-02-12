@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from djorm_pgfulltext.models import SearchManager
+from djorm_pgfulltext.fields import VectorField
+
+from server import managers
+
 
 class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -13,10 +18,20 @@ class BaseModel(models.Model):
 
 class List(BaseModel):
     name = models.CharField(max_length=300, null=False)
-    slug = models.SlugField(max_length=300, null=False, unique = True,db_index = True)
+    slug = models.SlugField(max_length=300, null=False, unique=True, db_index=True)
     description = models.TextField()
     user = models.ForeignKey(User, null=False)
     privacy_level = models.IntegerField(default=1)
+
+    objects = managers.ListManager()
+
+    search_index = VectorField()
+    sobjects = SearchManager(
+        fields=('name', 'description'),
+        config='pg_catalog.english',  # this is default
+        search_field='search_index',  # this is default
+        auto_update_search_field=True
+    )
 
 
 class Item(BaseModel):
@@ -25,6 +40,14 @@ class Item(BaseModel):
     url = models.CharField(max_length=300)
     user = models.ForeignKey(User, null=False)
     list = models.ForeignKey(List, null=False)
+
+    search_index = VectorField()
+    sobjects = SearchManager(
+        fields=('name', 'description', 'url'),
+        config='pg_catalog.english',  # this is default
+        search_field='search_index',  # this is default
+        auto_update_search_field=True
+    )
 
 
 class CollaborationInvitation(BaseModel):

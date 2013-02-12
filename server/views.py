@@ -1,12 +1,11 @@
 import logging
 import emailutil
 
-from django.shortcuts import render_to_response, render, redirect
+from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.contrib import auth
 from forms import ListForm, ItemForm, UserForm, LoginForm
-from django.template.defaultfilters import slugify
 from server.models import List, Item
 
 # Get an instance of a logger
@@ -18,8 +17,8 @@ def index(request):
 
 
 def home(request):
-    your_lists = List.objects.filter(user__id=request.user.id)
-    followed_lists = List.objects.filter(user__id=request.user.id)
+    your_lists = List.objects.filter(user=request.user)
+    followed_lists = List.objects.filter(user=request.user)
 
     return render(request, 'home.html', {'your_lists': your_lists, 'followed_lists': followed_lists})
 
@@ -36,11 +35,9 @@ def create_list(request):
         form = ListForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-            slug = slugify(name)
             description = form.cleaned_data['description']
-            print request.user.id
             user = request.user
-            list = List.objects.create(name=name, slug = slug, description=description, user=user)
+            list = List.objects.create_list(name=name, description=description, user=user)
             if list:
                 return HttpResponseRedirect('/list/%s' % list.slug)
         else:
@@ -70,10 +67,8 @@ def signup(request):
             user.last_name = last_name
             user.save()
             emailutil.send_welcome_email(user)
-            user = auth.authenticate(username=user.username, password=user.password)
-            if user:
-                auth.login(request, user)
-                return HttpResponseRedirect('/home/')  # Redirect after POST
+            auth.login(request, user)
+            return HttpResponseRedirect('/home/')  # Redirect after POST
         else:
             return render(request, 'signup.html', {'form': form})
 
@@ -143,9 +138,9 @@ def login(request):
                 messages.append("Email or password incorrect")
                 return render(request, 'login.html', {'form': form, 'messages': messages})
         else:
-            return render(request, 'login.html', {'form':form})
+            return render(request, 'login.html', {'form': form})
 
-        
+
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
