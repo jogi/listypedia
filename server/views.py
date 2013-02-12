@@ -72,6 +72,7 @@ def signup(request):
             user.last_name = last_name
             user.save()
             emailutil.send_welcome_email(user)
+            user = auth.authenticate(username=username, password=password)
             auth.login(request, user)
             return HttpResponseRedirect('/home/')  # Redirect after POST
         else:
