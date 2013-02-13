@@ -6,13 +6,14 @@ from django.template.defaultfilters import slugify
 class ListManager(models.Manager):
     def create_list(self, name, description, user):
         slug = slugify(name)
-        return super(ListManager, self).create(name=name, slug = slug, description=description, user=user)
+        return super(ListManager, self).create(name=name, slug=slug, description=description, user=user)
 
 
 class ItemManager(models.Manager):
     def create_item(self):
         return super(ItemManager, self).create()
-    
+
+
 class FollowerManager(models.Manager):
-    def create_follower(self,user,list):
-        return super(FollowerManager, self).create(user=user,list=list)
+    def create_follower(self, user, list):
+        return super(FollowerManager, self).create(user=user, list=list)

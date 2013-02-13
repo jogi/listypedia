@@ -10,12 +10,17 @@
     {% endfor %}
 </div>
 {% endif %}
+{% if form.errors %}
+<div class="alert alert-error">
+    Your username and password didn't match. Please try again.
+</div>
+{% endif %}
 <form class="form-horizontal" action="/login/" method="POST">
 	{% csrf_token %}
     <div class="control-group">
-        <label class="control-label" for="email">Email</label>
+        <label class="control-label" for="email">Username or Email</label>
         <div class="controls">
-            <input type="text" id="email" name="email" placeholder="email@domain.com" /><span class="help-inline">{{ form.email.errors }}</span>
+            <input type="text" id="username" name="username" placeholder="email@domain.com" /><span class="help-inline">{{ form.email.errors }}</span>
         </div>
     </div>
     <div class="control-group">
@@ -24,6 +29,7 @@
             <input type="password" id="password" name="password" placeholder="Password" /><span class="help-inline">{{ form.password.errors }}</span>
         </div>
     </div>
+    <input type="hidden" name="next" value="{{ next }}" />
     <div class="form-actions">
 	    <button type="submit" class="btn btn-primary btn-large btn-flat">Submit</button>
     </div>

@@ -113,6 +113,7 @@ ROOT_URLCONF = 'listypedia.urls'
 WSGI_APPLICATION = 'listypedia.wsgi.application'
 
 AUTHENTICATION_BACKENDS = (
+    'server.backends.EmailOrUsernameModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -183,3 +184,4 @@ AWS_ACCESS_KEY_ID = 'AKIAIFDTEKEQWMJIIBWQ'
 AWS_SECRET_ACCESS_KEY = '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'
 EMAIL_BACKEND = 'django_ses.SESBackend'
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
