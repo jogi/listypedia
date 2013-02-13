@@ -2,11 +2,11 @@ import logging
 import emailutil
 
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
-from forms import ListForm, ItemForm, UserForm, LoginForm
-from server.models import List, Item
+from forms import ListForm, ItemForm, UserForm, LoginForm, FollowerForm
+from server.models import List, Item, Follower
 from django.contrib.auth.decorators import login_required
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -42,7 +42,12 @@ def create_list(request):
             user = request.user
             list = List.objects.create_list(name=name, description=description, user=user)
             if list:
-                return HttpResponseRedirect('/list/%s' % list.slug)
+                follower = Follower.objects.create_follower(user=user,list=list)
+                if follower:
+                    emailutil.send_follow__confirmation_email(user, list)
+                    return HttpResponseRedirect('/list/%s' % list.slug)
+                else:
+                    return HttpResponse(status=500)                
         else:
             return render(request, 'create_list.html', {
                 'form': form
@@ -85,14 +90,20 @@ def signup(request):
 
 
 def view_list(request, slug):
+    followed = False
     try:
         list = List.objects.get(slug=slug)
         items = Item.objects.filter(list=list)
+        if request.user.is_authenticated():
+            follower = Follower.objects.filter(user = request.user,list=list)
+            if follower:
+                followed = True
     except List.DoesNotExist:
         raise Http404
     return render(request, 'view_list.html', {
         'list': list,
-        'items': items
+        'items': items,
+        'followed' : followed
     })
 
 @login_required
@@ -114,6 +125,8 @@ def add_item(request, slug):
             user = request.user
             item = Item.objects.create(name=name, description=description, url=url, list=list, user=user)
             if item:
+                followers = Follower.objects.filter(list=list)
+                emailutil.send_item__add_notification_email(user, list,item, followers)
                 return HttpResponseRedirect('/list/%s' % list.slug)
         else:
             return render(request, 'add_item.html', {
@@ -128,7 +141,21 @@ def add_collabarator(request):
 @login_required
 def add_follower(request):
     logger.info("In follow_list")
-
+    form = FollowerForm(request.POST)
+    if form.is_valid():
+        list_id = form.cleaned_data['list_id']
+        list = List.objects.get(pk=list_id)
+        user = request.user
+        follower = Follower.objects.create_follower(user=user,list=list)
+        if follower:
+            emailutil.send_follow__confirmation_email(user, list)
+            return render(request, 'follow_confirmation.html', {
+                'list': list,
+            })
+        else:
+            return HttpResponse(status=500)
+    else:
+        return HttpResponse(status=500)
 
 def login(request):
     messages = []

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="marketing">
+	You will recieve an email notification when a new item is added to <a href="http://www.listypedia.com/list/{{list.slug}}">{{list.name}}</a>
+    <p class="marketing-byline">Search for other interesting lists.</p>
+    <br>
+    <div class="row">
+        <div class="span4 offset4">
+            <form class="form-search" action="/search/" method="POST">
+                {% csrf_token %}
+                <div class="input-prepend input-append">
+                    <span class="add-on"><i class="icon-search"></i></span>
+                    <input type="text" name="q" class="span3 appendedPrependedInput">
+                    <button type="submit" class="btn">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

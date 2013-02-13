@@ -1,0 +1,9 @@
+{% extends "base_email.html" %}
+{% block email_greeting %}
+Hi, {{user.first_name}}&nbsp;{{user.last_name}}
+{% endblock %}
+{% block email_body %}
+{{user.username}} added {{item.name}} to {{list.name}}
+<br>
+See the full list at <a href="http://www.listypedia.com/list/{{list.slug}}">{{list.name}}</a>
+{% endblock %}

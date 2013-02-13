@@ -29,8 +29,14 @@
         <div class="span3">
             <a class="btn btn-primary btn-large btn-flat btn-block" href="/list/{{ list.slug }}/item/add/"><i class="icon-plus icon-white"></i> Add Item</a>
             <br>
-            <a class="btn btn-success btn-large btn-flat btn-block" href="/list/follow/"><i class="icon-check icon-white"></i> Follow List</a>
+            {% if not followed %}
+            <form action="/list/follow/" method="post">
+            	{% csrf_token %}
+            	<input type="hidden" name="list_id" value="{{list.id}}"/>
+            	<button type="submit" class="btn btn-success btn-large btn-flat btn-block" href="/list/follow/"><i class="icon-check icon-white"></i> Follow List</button>
+            </form>
             <br>
+            {% endif %}
             <h4>Created By</h4>
             {{ list.user.first_name }} {{ list.user.last_name}}
             {% if collabarators %}

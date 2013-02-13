@@ -64,3 +64,4 @@ class Collaborator(BaseModel):
 class Follower(BaseModel):
     user = models.ForeignKey(User, null=False)
     list = models.ForeignKey(List, null=False)
+    objects = managers.FollowerManager()

@@ -42,3 +42,6 @@ class UserForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(required=True)
     password = forms.CharField(required=True)
+    
+class FollowerForm(forms.Form):
+    list_id = forms.IntegerField(required=True)
