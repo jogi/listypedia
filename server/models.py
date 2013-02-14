@@ -54,6 +54,7 @@ class CollaborationInvitation(BaseModel):
     user = models.ForeignKey(User, null=False)
     list = models.ForeignKey(List, null=False)
     email = models.EmailField(null=False)
+    code = models.CharField(max_length=50,null=False)
 
 
 class Collaborator(BaseModel):

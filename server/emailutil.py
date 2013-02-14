@@ -30,6 +30,18 @@ def send_follow__confirmation_email(user, list):
     msg = EmailMultiAlternatives(subject, email_msg, from_email, to)
     msg.content_subtype = "html"
     msg.send(fail_silently=True)
+    
+def send_collabaration_invitation_email(user, list, collabaration_invitation):
+    email_template = get_template('email/collaboration_invitation_email.html')
+    context = Context({'user': user, 'list': list,'collabaration_invitation':collabaration_invitation})
+    email_msg = email_template.render(context)
+    subject = "You are invited to collaborate on - %s" % list.name
+    from_email = FROM_EMAIL
+    to = []
+    to.append(collabaration_invitation.email)
+    msg = EmailMultiAlternatives(subject, email_msg, from_email, to)
+    msg.content_subtype = "html"
+    msg.send(fail_silently=True)
 
 
 def send_item__add_notification_email(user, list, item, followers):

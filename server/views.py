@@ -5,10 +5,10 @@ from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
-from forms import ListForm, ItemForm, UserForm, FollowerForm
-from server.models import List, Item, Follower
+from forms import ListForm, ItemForm, UserForm, FollowerForm, CollaborationInvitationForm
+from server.models import List, Item, Follower, Collaborator, CollaborationInvitation
 from server import emailutil
-
+import uuid
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -94,6 +94,7 @@ def signup(request):
 
 def view_list(request, slug):
     followed = False
+    creator = False
     try:
         list = List.objects.get(slug=slug)
         items = Item.objects.filter(list=list)
@@ -101,12 +102,15 @@ def view_list(request, slug):
             follower = Follower.objects.filter(user=request.user, list=list)
             if follower:
                 followed = True
+            if request.user.id == list.user.id:
+                creator = True
     except List.DoesNotExist:
         raise Http404
     return render(request, 'view_list.html', {
         'list': list,
         'items': items,
-        'followed': followed
+        'followed': followed,
+        'creator': creator
     })
 
 
@@ -140,8 +144,39 @@ def add_item(request, slug):
 
 
 @login_required
+def invite_collabarator(request,slug):
+    logger.info("In invite_collabarator")
+    list = List.objects.get(slug=slug)
+    current_collaborators = CollaborationInvitation.objects.filter(list=list)
+    return render(request, 'collaboration_invitation.html', {
+        'list': list,
+        'current_collaborators': current_collaborators,
+    })
+    
+@login_required
 def add_collabarator(request):
-    logger.info("In add_collabarator")
+    form = CollaborationInvitationForm(request.POST)
+    if form.is_valid():
+        email = form.cleaned_data['email']
+        list_id = form.cleaned_data['list_id']
+        list = List.objects.get(pk=list_id)
+        user = request.user
+        collabarator_invitation = CollaborationInvitation.objects.create(user=user,list=list,email=email,code=uuid.uuid1())
+        if collabarator_invitation:
+            emailutil.send_collabaration_invitation_email(user,list,collabarator_invitation)
+            return HttpResponseRedirect('/list/%s/invite' % list.slug)
+    else:
+        list = List.objects.get(pk=request.POST["list_id"])
+        current_collaborators = CollaborationInvitation.objects.filter(list=list)
+        return render(request, 'collaboration_invitation.html', {
+            'list': list,
+            'current_collaborators': current_collaborators,
+            'form': form,
+        })
+        
+            
+        
+    
 
 
 @login_required

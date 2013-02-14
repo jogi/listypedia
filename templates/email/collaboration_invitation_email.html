@@ -1,0 +1,9 @@
+{% extends "email/base_email.html" %}
+{% block email_greeting %}
+Hi,
+{% endblock %}
+{% block email_body %}
+{{user.first_name}}&nbsp;{{user.last_name}} has invited you to collaborate on {{list.name}} list. Please click on the link below to accept the invitation
+<br>
+<a href="http://www.listypedia.com/list/invitation?c={{collabaration_invitation.code}}">{{list.name}}</a>
+{% endblock %}

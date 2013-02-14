@@ -2,7 +2,7 @@
 
 from django import forms
 from django.contrib.auth.models import User
-
+from models import CollaborationInvitation
 
 class ListForm(forms.Form):
     name = forms.CharField(max_length=300, required=True)
@@ -45,3 +45,15 @@ class LoginForm(forms.Form):
     
 class FollowerForm(forms.Form):
     list_id = forms.IntegerField(required=True)
+    
+class CollaborationInvitationForm(forms.Form):
+    list_id = forms.IntegerField(required=True)
+    email = forms.EmailField(required=True)
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        list_id = self.cleaned_data['list_id']
+        try:
+            collaborator = CollaborationInvitation.objects.get(email=email,list_id=list_id)
+        except CollaborationInvitation.DoesNotExist:
+            return email
+        raise forms.ValidationError(u'User with %s email has already been invited' % email)

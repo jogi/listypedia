@@ -18,4 +18,6 @@ urlpatterns = patterns('',
     url(r'^list/follow/', 'server.views.add_follower', name='add_follower'),
     url(r'^list/(?P<slug>[a-zA-Z0-9_.-]+)/$', 'server.views.view_list', name='view_list'),
     url(r'^list/(?P<slug>[a-zA-Z0-9_.-]+)/item/add/', 'server.views.add_item', name='add_item'),
+    url(r'^list/(?P<slug>[a-zA-Z0-9_.-]+)/invite/', 'server.views.invite_collabarator', name='invite_collabarator'),
+    url(r'^list/collabarator/add/', 'server.views.add_collabarator', name='add_collabarator'),
 )

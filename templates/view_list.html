@@ -42,7 +42,10 @@
             	<input type="hidden" name="list_id" value="{{list.id}}"/>
             	<button type="submit" class="btn btn-success btn-large btn-flat btn-block" href="/list/unfollow/"><i class="icon-remove icon-white"></i> UnFollow List</button>
             </form>
-            <br>
+            {% endif %}
+            {% if creator %}
+                <a class="btn btn-info btn-large btn-flat btn-block" href="/list/{{list.slug}}/invite/"><i class="icon-user icon-white"></i> Invite Collaborator</a>
+            	<br>
             {% endif %}
             <h4>Created By</h4>
             {{ list.user.first_name }} {{ list.user.last_name}}
