@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="page-header">
-	<h1>Sign Up</h1>
+    <h1>Sign Up</h1>
 </div>
 <div class="alert alert-info">
     All fields are required.
 </div>
 <form class="form-horizontal" action="/signup/" method="POST">
-	{% csrf_token %}
+    {% csrf_token %}
     <div class="control-group">
         <label class="control-label" for="first_name">First Name</label>
         <div class="controls">
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="form-actions">
-	    <button type="submit" class="btn btn-primary btn-large btn-flat">Submit</button>
+        <button type="submit" class="btn btn-primary btn-large btn-flat">Submit</button>
     </div>
 </form>
 {% endblock %}

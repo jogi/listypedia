@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="page-header">
-	<h1>Login</h1>
+    <h1>Login</h1>
 </div>
 {% if messages %}
 <div class="alert alert-warning">
@@ -16,7 +16,7 @@
 </div>
 {% endif %}
 <form class="form-horizontal" action="/login/" method="POST">
-	{% csrf_token %}
+    {% csrf_token %}
     <div class="control-group">
         <label class="control-label" for="email">Username or Email</label>
         <div class="controls">
@@ -31,7 +31,7 @@
     </div>
     <input type="hidden" name="next" value="{{ next }}" />
     <div class="form-actions">
-	    <button type="submit" class="btn btn-primary btn-large btn-flat">Submit</button>
+        <button type="submit" class="btn btn-primary btn-large btn-flat">Submit</button>
     </div>
 </form>
 {% endblock %}

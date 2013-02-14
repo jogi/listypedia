@@ -1,5 +1,5 @@
 /* Sticky footer styles
-      -------------------------------------------------- */
+-------------------------------------------------- */
 
 html,
 body {
@@ -32,7 +32,7 @@ body {
     margin-right: -20px;
     padding-left: 20px;
     padding-right: 20px;
-  }
+}
 }
 
 
@@ -56,7 +56,7 @@ code {
 .btn-inverse.active {
   background-color: #080808 \9;
 }
- 
+
 .btn-flat {
     filter:progid:DXImageTransform.Microsoft.Gradient(enabled='false');
     -webkit-box-shadow: none;
@@ -82,7 +82,7 @@ code {
   font-weight: normal;
   color: #fff;
   text-shadow: 0 1px 0 #000000, 0 0 5px #000000;
-  text-transform: none;  
+  text-transform: none;
 }
 
 /* Faded out hr */

@@ -2,22 +2,22 @@
 {% load humanize %}
 {% block content %}
 <div class="page-header">
-	<h1>Showing search results for - {{ query }}</h1>
+    <h1>Showing search results for - {{ query }}</h1>
 </div>
 <div class="row">
-	<div class="span12">
-		{% if lists.count > 0 %}
-			{% for list in lists %}
-			<div>
-				<h3><a href="/list/{{ list.slug }}/">{{ list.name }}</a></h3>
-				<p class="lead">{{ list.description }}</p>
-				{{ list.user.first_name}} {{ list.user.last_name }} - {{ list.created|naturaltime}}
-				<hr>
-			</div>
-			{% endfor %}
-		{% else %}
-			<p class="lead">No lists found.</p>
-		{% endif %}
-	</div>
+    <div class="span12">
+        {% if lists.count > 0 %}
+            {% for list in lists %}
+            <div>
+                <h3><a href="/list/{{ list.slug }}/">{{ list.name }}</a></h3>
+                <p class="lead">{{ list.description }}</p>
+                {{ list.user.first_name}} {{ list.user.last_name }} - {{ list.created|naturaltime}}
+                <hr>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="lead">No lists found.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
