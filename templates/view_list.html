@@ -36,6 +36,13 @@
                 <button type="submit" class="btn btn-success btn-large btn-flat btn-block" href="/list/follow/"><i class="icon-check icon-white"></i> Follow List</button>
             </form>
             <br>
+            {% else %}
+            <form action="/list/unfollow/" method="post">
+            	{% csrf_token %}
+            	<input type="hidden" name="list_id" value="{{list.id}}"/>
+            	<button type="submit" class="btn btn-success btn-large btn-flat btn-block" href="/list/unfollow/"><i class="icon-remove icon-white"></i> UnFollow List</button>
+            </form>
+            <br>
             {% endif %}
             <h4>Created By</h4>
             {{ list.user.first_name }} {{ list.user.last_name}}

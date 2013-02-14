@@ -154,7 +154,7 @@ def add_follower(request):
         user = request.user
         follower = Follower.objects.create_follower(user=user, list=list)
         if follower:
-            emailutil.send_follow__confirmation_email(user, list)
+            #emailutil.send_follow__confirmation_email(user, list)
             return render(request, 'follow_confirmation.html', {
                 'list': list,
             })
