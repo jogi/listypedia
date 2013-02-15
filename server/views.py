@@ -100,10 +100,18 @@ def view_list(request, slug):
         list = List.objects.get(slug=slug)
         items = Item.objects.filter(list=list)
         if request.user.is_authenticated():
-            follower = Follower.objects.filter(user=request.user, list=list)
-            collaborator_user = Collaborator.objects.get(user=request.user)
-            if follower:
+            try:
+                follower = Follower.objects.filter(user=request.user, list=list)
                 followed = True
+            except Follower.DoesNotExist:
+                followed = False
+
+            try:
+                collaborator_user = Collaborator.objects.get(user=request.user)
+                collaborator = True
+            except Collaborator.DoesNotExist:
+                collaborator = False
+
             if request.user.id == list.user.id:
                 creator = True
             if creator or collaborator_user:
@@ -149,7 +157,7 @@ def add_item(request, slug):
 
 
 @login_required
-def invite_collabarator(request,slug):
+def invite_collabarator(request, slug):
     logger.info("In invite_collabarator")
     list = List.objects.get(slug=slug)
     current_collaborators = CollaborationInvitation.objects.filter(list=list)
@@ -157,7 +165,8 @@ def invite_collabarator(request,slug):
         'list': list,
         'current_collaborators': current_collaborators,
     })
-    
+
+
 @login_required
 def accept_invitation(request):
     logger.info("In accept_invitation")
@@ -166,14 +175,13 @@ def accept_invitation(request):
         code = request.GET["c"]
         invitation = CollaborationInvitation.objects.get(code=code)
         if invitation:
-            collaborator = Collaborator.objects.create(user=request.user,list=invitation.list)
-            follower = Follower.objects.create_follower(user=request.user,list=invitation.list)
+            collaborator = Collaborator.objects.create(user=request.user, list=invitation.list)
             if collaborator:
                 return HttpResponseRedirect('/list/%s/item/add/' % invitation.list.slug)
     except CollaborationInvitation.DoesNotExist:
         raise Http404
-        
-    
+
+
 @login_required
 def add_collabarator(request):
     form = CollaborationInvitationForm(request.POST)
@@ -182,9 +190,9 @@ def add_collabarator(request):
         list_id = form.cleaned_data['list_id']
         list = List.objects.get(pk=list_id)
         user = request.user
-        collabarator_invitation = CollaborationInvitation.objects.create(user=user,list=list,email=email,code=uuid.uuid1())
+        collabarator_invitation = CollaborationInvitation.objects.create(user=user, list=list, email=email, code=uuid.uuid1())
         if collabarator_invitation:
-            emailutil.send_collabaration_invitation_email(user,list,collabarator_invitation)
+            emailutil.send_collabaration_invitation_email(user, list, collabarator_invitation)
             return HttpResponseRedirect('/list/%s/invite' % list.slug)
     else:
         list = List.objects.get(pk=request.POST["list_id"])
@@ -194,10 +202,6 @@ def add_collabarator(request):
             'current_collaborators': current_collaborators,
             'form': form,
         })
-        
-            
-        
-    
 
 
 @login_required
