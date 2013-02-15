@@ -95,22 +95,27 @@ def signup(request):
 def view_list(request, slug):
     followed = False
     creator = False
+    collaborator = False
     try:
         list = List.objects.get(slug=slug)
         items = Item.objects.filter(list=list)
         if request.user.is_authenticated():
             follower = Follower.objects.filter(user=request.user, list=list)
+            collaborator_user = Collaborator.objects.get(user=request.user)
             if follower:
                 followed = True
             if request.user.id == list.user.id:
                 creator = True
+            if creator or collaborator_user:
+                collaborator = True
     except List.DoesNotExist:
         raise Http404
     return render(request, 'view_list.html', {
         'list': list,
         'items': items,
         'followed': followed,
-        'creator': creator
+        'creator': creator,
+        'collaborator': collaborator,
     })
 
 
@@ -152,6 +157,22 @@ def invite_collabarator(request,slug):
         'list': list,
         'current_collaborators': current_collaborators,
     })
+    
+@login_required
+def accept_invitation(request):
+    logger.info("In accept_invitation")
+    print "in accept"
+    try:
+        code = request.GET["c"]
+        invitation = CollaborationInvitation.objects.get(code=code)
+        if invitation:
+            collaborator = Collaborator.objects.create(user=request.user,list=invitation.list)
+            follower = Follower.objects.create_follower(user=request.user,list=invitation.list)
+            if collaborator:
+                return HttpResponseRedirect('/list/%s/item/add/' % invitation.list.slug)
+    except CollaborationInvitation.DoesNotExist:
+        raise Http404
+        
     
 @login_required
 def add_collabarator(request):

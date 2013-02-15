@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^list/(?P<slug>[a-zA-Z0-9_.-]+)/item/add/', 'server.views.add_item', name='add_item'),
     url(r'^list/(?P<slug>[a-zA-Z0-9_.-]+)/invite/', 'server.views.invite_collabarator', name='invite_collabarator'),
     url(r'^list/collabarator/add/', 'server.views.add_collabarator', name='add_collabarator'),
+    url(r'^list/invitation/accept/', 'server.views.accept_invitation', name='accept_invitation'),
 )

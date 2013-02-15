@@ -27,8 +27,10 @@
             {% endif %}
         </div>
         <div class="span3">
+        	{% if collaborator %}
             <a class="btn btn-primary btn-large btn-flat btn-block" href="/list/{{ list.slug }}/item/add/"><i class="icon-plus icon-white"></i> Add Item</a>
             <br>
+            {% endif %}
             {% if not followed %}
             <form action="/list/follow/" method="post">
                 {% csrf_token %}
