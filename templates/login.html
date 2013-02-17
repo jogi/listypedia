@@ -15,18 +15,18 @@
     Your username and password didn't match. Please try again.
 </div>
 {% endif %}
-<form class="form-horizontal" action="/login/" method="POST">
+<form class="form-horizontal form-vertical" action="/login/" method="POST">
     {% csrf_token %}
     <div class="control-group">
-        <label class="control-label" for="email">Username or Email</label>
+        <label class="control-label" for="email">Username</label>
         <div class="controls">
-            <input type="text" id="username" name="username" placeholder="email@domain.com" /><span class="help-inline">{{ form.email.errors }}</span>
+            <input type="text" class="span5" id="username" name="username" placeholder="Username or email" /><span class="help-inline">{{ form.email.errors }}</span>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="password">Password</label>
         <div class="controls">
-            <input type="password" id="password" name="password" placeholder="Password" /><span class="help-inline">{{ form.password.errors }}</span>
+            <input type="password" class="span5" id="password" name="password" placeholder="Password" /><span class="help-inline">{{ form.password.errors }}</span>
         </div>
     </div>
     <input type="hidden" name="next" value="{{ next }}" />
