@@ -184,3 +184,67 @@ hr.soften {
 .list-post button.btn-link {
 	padding: 0;
 }
+
+.form-vertical textarea,
+.form-vertical input[type="text"],
+.form-vertical input[type="password"],
+.form-vertical input[type="datetime"],
+.form-vertical input[type="datetime-local"],
+.form-vertical input[type="date"],
+.form-vertical input[type="month"],
+.form-vertical input[type="time"],
+.form-vertical input[type="week"],
+.form-vertical input[type="number"],
+.form-vertical input[type="email"],
+.form-vertical input[type="url"],
+.form-vertical input[type="search"],
+.form-vertical input[type="tel"],
+.form-vertical input[type="color"] {
+    font-size: 20px;
+    font-weight: 200;
+    height: 36px;
+    border: none;
+    border-bottom: 1px solid #cccccc;
+    -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.075);
+       -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.075);
+            box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.075);
+}
+
+.form-vertical textarea {
+    height: auto;
+}
+
+.form-vertical textarea:focus,
+.form-vertical input[type="text"]:focus,
+.form-vertical input[type="password"]:focus,
+.form-vertical input[type="datetime"]:focus,
+.form-vertical input[type="datetime-local"]:focus,
+.form-vertical input[type="date"]:focus,
+.form-vertical input[type="month"]:focus,
+.form-vertical input[type="time"]:focus,
+.form-vertical input[type="week"]:focus,
+.form-vertical input[type="number"]:focus,
+.form-vertical input[type="email"]:focus,
+.form-vertical input[type="url"]:focus,
+.form-vertical input[type="search"]:focus,
+.form-vertical input[type="tel"]:focus,
+.form-vertical input[type="color"]:focus,
+.form-vertical .uneditable-input:focus {
+  border-color: rgba(82, 168, 236, 0.8);
+  outline: 0;
+  outline: thin dotted \9;
+  /* IE6-9 */
+
+  -webkit-box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.075), 0 0 8px -8px rgba(82, 168, 236, 0.6);
+     -moz-box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.075), 0 0 8px -8px rgba(82, 168, 236, 0.6);
+          box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.075), 0 0 8px -8px rgba(82, 168, 236, 0.6);
+}
+
+.form-vertical label {
+    font-size: 22px;
+    line-height: 42px;
+}
+
+.light-text {
+    color: #999999;
+}

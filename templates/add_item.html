@@ -3,7 +3,7 @@
 <div class="page-header">
     <h1>Add Item to {{ list.name }}</h1>
 </div>
-<form class="form-horizontal" action="/list/{{ list.slug }}/item/add/" method="POST">
+<form class="form-vertical" action="/list/{{ list.slug }}/item/add/" method="POST">
     {% csrf_token %}
     <div class="control-group">
         <label class="control-label" for="name">Name</label>

@@ -39,7 +39,7 @@
                         <hr>
                         <form class="form-inline" action="/item/{{item.id}}/delete/" method="POST">
                             {% csrf_token %}
-                            {{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}} -
+                            <span class="light-text">{{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}} -</span>
                             {% if user.is_authenticated and creator or collaborator %}
                              <button class="btn btn-link" type="submit">Delete</button>
                             {% endif %}

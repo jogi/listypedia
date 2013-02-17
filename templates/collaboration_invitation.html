@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="span9">
-        <form action="/list/{{ list.slug }}/invite/" method="post">
+        <form class="form-vertical" action="/list/{{ list.slug }}/invite/" method="post">
             {% csrf_token %}
             <input type="hidden" name="list_id" value="{{ list.id }}">
             <div class="control-group">
