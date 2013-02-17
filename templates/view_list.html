@@ -1,17 +1,33 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% block extrahead %}
+<meta property="og:title" content="{{ list.name }}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://www.listypedia.co/list/{{ list.slug }}/" />
+<meta property="og:image" content="http://www.listypedia.com/site_media/images/listypedia-list-66.png" />
+<meta property="og:site_name" content="Listypedia" />
+<meta property="fb:admins" content="549715654" />
+{% endblock %}
+{% block extrajs %}
+<script src="http://platform.twitter.com/widgets.js"></script>
+<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+{% endblock %}
 {% block content %}
     {% if list %}
-    <div class="marketing">
+    <div class="header">
         <h1>{{ list.name }}</h1>
-        <p class="marketing-byline">{{ list.description }}</p>
+        <p class="header-byline">{{ list.description }}</p>
     </div>
-    <hr>
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#">Latest</a>
+        </li>
+    </ul>
     <div class="row">
         <div class="span9">
             {% if items %}
                 {% for item in items %}
-                    <div>
+                    <div class="list-post">
                         <h3>
                             {% if item.url %}
                                 <a href="{{ item.url }}">{{ item.name }}</a>
@@ -20,9 +36,18 @@
                             {% endif %}
                         </h3>
                         <p>{{ item.description }}</p>
-                        {{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}}
+                        <hr>
+                        {{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}} -
+                        {% if user.is_authenticated %}
+                            {% if creator or collaborator %}
+                                <form action="/list/{{list.slug}}/item/remove/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="item_id" value="{{item.id}}"/>
+                                    <a href="#" type="submit">Delete</a>
+                                </form>
+                            {% endif %}
+                        {% endif %}
                     </div>
-                    <hr>
                 {% endfor %}
             {% endif %}
         </div>
@@ -48,6 +73,14 @@
                 <a class="btn btn-info btn-large btn-flat btn-block" href="/list/{{list.slug}}/invite/"><i class="icon-user icon-white"></i> Invite Collaborator</a>
             	<br>
             {% endif %}
+            <div>
+                <h3>Share list</h3>
+                <br/>
+                <fb:like href="http://www.listypedia.com/list/{{ list.slug }}/" send="false" layout="box_count" width="450" show_faces="true" action="like"></fb:like>
+                &nbsp;&nbsp;&nbsp;
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.listypedia.com/list/{{ list.slug }}/" data-count="vertical" data-text="{{ list.name }}" data-via="Listypedia" data-size="medium" data-related="Listypedia" data-hashtags="listypedia">Tweet</a>
+            </div>
+            <hr>
             <h4>Created By</h4>
             {{ list.user.first_name }} {{ list.user.last_name}}
             {% if collabarators %}

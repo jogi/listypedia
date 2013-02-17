@@ -122,3 +122,57 @@ hr.soften {
   font-weight: 200;
   margin-bottom: 5px;
 }
+
+.header {
+  color: #5a5a5a;
+}
+.header .header-byline {
+  margin-bottom: 40px;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 25px;
+  color: #999;
+}
+.header p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.header h1 {
+  margin: 20px 0 10px;
+  font-size: 60px;
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.header h2 {
+  font-weight: 200;
+  margin-bottom: 5px;
+}
+
+.list-post {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background: none repeat scroll 0 0 rgba(250, 250, 250, 0.7);
+  border: 1px solid #e3e3e3;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+     -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.list-post h3 {
+    margin: 0;
+    font-weight: 500;
+}
+
+.list-post p {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 25px;
+}
+.list-post hr {
+    margin: 12px 0;
+}
