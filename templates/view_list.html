@@ -54,9 +54,8 @@
             <br>
             {% endif %}
             {% if not followed %}
-            <form action="/list/follow/" method="post">
+            <form action="/list/{{list.slug}}/follow/" method="post">
                 {% csrf_token %}
-                <input type="hidden" name="list_id" value="{{list.id}}"/>
                 <button type="submit" class="btn btn-success btn-large btn-flat btn-block" href="/list/follow/"><i class="icon-check icon-white"></i> Follow List</button>
             </form>
             {% else %}

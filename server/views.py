@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
-from forms import ListForm, ItemForm, UserForm, FollowerForm, CollaborationInvitationForm
+from forms import ListForm, ItemForm, UserForm, CollaborationInvitationForm
 from server.models import List, Item, Follower, Collaborator, CollaborationInvitation
 from server import emailutil
 import uuid
@@ -219,13 +219,13 @@ def accept_invitation(request):
 
 
 @login_required
-def add_follower(request):
+def add_follower(request,slug):
     logger.info("In follow_list")
-    form = FollowerForm(request.POST)
-    if form.is_valid():
-        list_id = form.cleaned_data['list_id']
-        list = List.objects.get(pk=list_id)
-        user = request.user
+    list = List.objects.get(slug=slug)
+    user = request.user
+    if request.method == 'GET':
+        return HttpResponseRedirect('/list/%s/' % list.slug)
+    elif request.method == 'POST':
         try:
             follower = Follower.objects.get(user=user, list=list)
             if follower:
@@ -241,9 +241,9 @@ def add_follower(request):
                 'list': list,
             })
         else:
-            return HttpResponse(status=500)
+            return HttpResponse(status=400)
     else:
-        return HttpResponse(status=500)
+        return HttpResponse(status=400)
     
 @login_required
 def remove_follower(request):
