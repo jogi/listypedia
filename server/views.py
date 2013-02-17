@@ -1,5 +1,6 @@
 import logging
-
+import urllib
+import bs4
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.contrib.auth.models import User
@@ -9,6 +10,7 @@ from forms import ListForm, ItemForm, UserForm, FollowerForm, CollaborationInvit
 from server.models import List, Item, Follower, Collaborator, CollaborationInvitation
 from server import emailutil
 import uuid
+from django.utils import simplejson
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -101,14 +103,16 @@ def view_list(request, slug):
         items = Item.objects.filter(list=list)
         if request.user.is_authenticated():
             try:
-                follower = Follower.objects.filter(user=request.user, list=list)
-                followed = True
+                follower = Follower.objects.filter(user=request.user, list=list,active=True)
+                if follower:
+                    followed = True
             except Follower.DoesNotExist:
                 followed = False
 
             try:
                 collaborator_user = Collaborator.objects.get(user=request.user)
-                collaborator = True
+                if collaborator_user:
+                    collaborator = True
             except Collaborator.DoesNotExist:
                 collaborator = False
 
@@ -207,12 +211,38 @@ def add_follower(request):
         list_id = form.cleaned_data['list_id']
         list = List.objects.get(pk=list_id)
         user = request.user
-        follower = Follower.objects.create_follower(user=user, list=list)
+        try:
+            follower = Follower.objects.get(user=user, list=list)
+            if follower:
+                follower.active = True
+                follower.save()
+            else:
+                follower = Follower.objects.create_follower(user=user, list=list)
+        except Follower.DoesNotExist:
+                follower = Follower.objects.create_follower(user=user, list=list)
         if follower:
             #emailutil.send_follow_confirmation_email(user, list)
             return render(request, 'follow_confirmation.html', {
                 'list': list,
             })
+        else:
+            return HttpResponse(status=500)
+    else:
+        return HttpResponse(status=500)
+    
+@login_required
+def remove_follower(request):
+    logger.info("In follow_list")
+    form = FollowerForm(request.POST)
+    if form.is_valid():
+        list_id = form.cleaned_data['list_id']
+        list = List.objects.get(pk=list_id)
+        user = request.user
+        follower = Follower.objects.get(user=user, list=list)
+        follower.active = False
+        follower.save()
+        if follower:
+            return HttpResponseRedirect('/list/%s' % list.slug)
         else:
             return HttpResponse(status=500)
     else:
@@ -227,3 +257,14 @@ def search(request):
         'lists': lists,
         'query': query
     })
+    
+def page_info(request):
+    url = request.GET["u"]
+    page_info = {}
+    page_info["url"] = url
+    try:
+        soup = bs4.BeautifulSoup(urllib.urlopen(url),"lxml")
+        page_info["title"] = soup.title.string
+    except:
+        page_info["title"] = ""
+    return HttpResponse(simplejson.dumps(page_info), mimetype='application/json')
