@@ -19,7 +19,7 @@ def send_welcome_email(user):
     msg.send(fail_silently=True)
 
 
-def send_follow__confirmation_email(user, list):
+def send_follow_confirmation_email(user, list):
     email_template = get_template('email/follow_confirmation_email.html')
     context = Context({'user': user, 'list': list})
     email_msg = email_template.render(context)
@@ -30,7 +30,7 @@ def send_follow__confirmation_email(user, list):
     msg = EmailMultiAlternatives(subject, email_msg, from_email, to)
     msg.content_subtype = "html"
     msg.send(fail_silently=True)
-    
+
 def send_collabaration_invitation_email(user, list, collabaration_invitation):
     email_template = get_template('email/collaboration_invitation_email.html')
     context = Context({'user': user, 'list': list,'collabaration_invitation':collabaration_invitation})
@@ -44,7 +44,7 @@ def send_collabaration_invitation_email(user, list, collabaration_invitation):
     msg.send(fail_silently=True)
 
 
-def send_item__add_notification_email(user, list, item, followers):
+def send_item_add_notification_email(user, list, item, followers):
     email_template = get_template('email/item_add_notification_email.html')
     context = Context({'user': user, 'list': list, 'item': item})
     email_msg = email_template.render(context)

@@ -1,36 +1,36 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% block content %}
-    {% if list %}
-    <div class="marketing">
-        <h1>{{ list.name }}</h1>
-        <p class="marketing-byline">{{ list.description }}</p>
+{% if list %}
+<div class="marketing">
+    <h1>{{ list.name }}</h1>
+    <p class="marketing-byline">{{ list.description }}</p>
+</div>
+<hr />
+<div class="row">
+    <div class="span9">
+        <form action="/list/{{ list.slug }}/invite/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="list_id" value="{{ list.id }}">
+            <div class="control-group">
+                <label class="control-label" for="email">Email</label>
+                <div class="controls">
+                    <input class="input-xxlarge" type="text" id="email" name="email" maxlength="300" placeholder="someone@example.com" /><span class="help-inline">{{ form.email.errors }}</span>
+                </div>
+            </div>
+            <button style="width:20%" type="submit" class="btn btn-info btn-large btn-flat btn-block" href="/list/follow/"><i class="icon-user icon-white"></i> Invite</button>
+        </form>
     </div>
-    <hr>
-    <div class="row">
-        <div class="span9">
-            <form action="/list/collabarator/add/" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="list_id" value="{{list.id}}"/>
-			    <div class="control-group">
-			        <label class="control-label" for="email">Email</label>
-			        <div class="controls">
-			            <input class="input-xxlarge" type="text" id="email" name="email" maxlength="300" placeholder="someone@example.com" /><span class="help-inline">{{ form.email.errors }}</span>
-			        </div>
-			    </div>
-                <button style="width:20%" type="submit" class="btn btn-info btn-large btn-flat btn-block" href="/list/follow/"><i class="icon-user icon-white"></i>Invite</button>
-            </form>
-        </div>
-        <div class="span3">
-            <br>
-            <h4>Current Collabarators</h4>
-            {% if current_collaborators %}
-                <br>
-                {% for current_collaborator in current_collaborators %}
-                    {{ current_collaborator.email }}
-                {% endfor %}
-            {% endif %}
-        </div>
+    <div class="span3">
+        <br />
+        <h4>Current Invitees</h4>
+        {% if current_invitees %}
+            <br />
+            {% for current_invitee in current_invitees %}
+                {{ current_invitee.email }}
+            {% endfor %}
+        {% endif %}
     </div>
-    {% endif %}
+</div>
+{% endif %}
 {% endblock %}

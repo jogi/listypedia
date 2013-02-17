@@ -1,5 +1,6 @@
 Django==1.4.3
 South==0.7.6
+beautifulsoup4==4.1.3
 boto==2.8.0
 distribute==0.6.31
 dj-database-url==0.2.1

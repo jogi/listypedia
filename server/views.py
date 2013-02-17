@@ -47,7 +47,7 @@ def create_list(request):
             if list:
                 follower = Follower.objects.create_follower(user=user, list=list)
                 if follower:
-                    emailutil.send_follow__confirmation_email(user, list)
+                    #emailutil.send_follow_confirmation_email(user, list)
                     return HttpResponseRedirect('/list/%s' % list.slug)
                 else:
                     return HttpResponse(status=500)
@@ -147,7 +147,7 @@ def add_item(request, slug):
             item = Item.objects.create(name=name, description=description, url=url, list=list, user=user)
             if item:
                 followers = Follower.objects.filter(list=list)
-                emailutil.send_item__add_notification_email(user, list, item, followers)
+                emailutil.send_item_add_notification_email(user, list, item, followers)
                 return HttpResponseRedirect('/list/%s' % list.slug)
         else:
             return render(request, 'add_item.html', {
@@ -157,14 +157,31 @@ def add_item(request, slug):
 
 
 @login_required
-def invite_collabarator(request, slug):
+def invite_collaborator(request, slug):
     logger.info("In invite_collabarator")
     list = List.objects.get(slug=slug)
-    current_collaborators = CollaborationInvitation.objects.filter(list=list)
-    return render(request, 'collaboration_invitation.html', {
-        'list': list,
-        'current_collaborators': current_collaborators,
-    })
+    if request.method == 'GET':
+        current_invitees = CollaborationInvitation.objects.filter(list=list)
+        return render(request, 'collaboration_invitation.html', {
+            'list': list,
+            'current_invitees': current_invitees,
+        })
+    elif request.method == 'POST':
+        form = CollaborationInvitationForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = request.user
+            collabarator_invitation = CollaborationInvitation.objects.create(user=user, list=list, email=email, code=uuid.uuid1())
+            if collabarator_invitation:
+                emailutil.send_collabaration_invitation_email(user, list, collabarator_invitation)
+                return HttpResponseRedirect('/list/%s/invite' % list.slug)
+        else:
+            current_collaborators = CollaborationInvitation.objects.filter(list=list)
+            return render(request, 'collaboration_invitation.html', {
+                'list': list,
+                'current_collaborators': current_collaborators,
+                'form': form,
+            })
 
 
 @login_required
@@ -183,28 +200,6 @@ def accept_invitation(request):
 
 
 @login_required
-def add_collabarator(request):
-    form = CollaborationInvitationForm(request.POST)
-    if form.is_valid():
-        email = form.cleaned_data['email']
-        list_id = form.cleaned_data['list_id']
-        list = List.objects.get(pk=list_id)
-        user = request.user
-        collabarator_invitation = CollaborationInvitation.objects.create(user=user, list=list, email=email, code=uuid.uuid1())
-        if collabarator_invitation:
-            emailutil.send_collabaration_invitation_email(user, list, collabarator_invitation)
-            return HttpResponseRedirect('/list/%s/invite' % list.slug)
-    else:
-        list = List.objects.get(pk=request.POST["list_id"])
-        current_collaborators = CollaborationInvitation.objects.filter(list=list)
-        return render(request, 'collaboration_invitation.html', {
-            'list': list,
-            'current_collaborators': current_collaborators,
-            'form': form,
-        })
-
-
-@login_required
 def add_follower(request):
     logger.info("In follow_list")
     form = FollowerForm(request.POST)
@@ -214,7 +209,7 @@ def add_follower(request):
         user = request.user
         follower = Follower.objects.create_follower(user=user, list=list)
         if follower:
-            #emailutil.send_follow__confirmation_email(user, list)
+            #emailutil.send_follow_confirmation_email(user, list)
             return render(request, 'follow_confirmation.html', {
                 'list': list,
             })
