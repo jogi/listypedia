@@ -160,19 +160,19 @@ def add_item(request, slug):
             })
             
 @login_required
-def remove_item(request, slug):
+def delete_item(request, item_id):
     logger.info("In add_item")
-    list = List.objects.get(slug=slug)
     if request.method == 'POST':
-        item_id = request.POST["item_id"]
         item = Item.objects.get(pk=item_id)
-        if item.user.id == request.user.id:
+        collaborator = Collaborator.objects.filter(list=item.list, user=request.user)
+        if collaborator or item.list.user == request.user:
             item.active = False
             item.save()
-        return HttpResponseRedirect('/list/%s' % list.slug)
+        else:
+            return HttpResponse(status=403)
+        return HttpResponseRedirect('/list/%s/' % item.list.slug)
     else:
-        raise Http404
-        
+        return HttpResponse(status=400)
 
 
 @login_required

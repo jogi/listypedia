@@ -37,16 +37,13 @@
                         </h3>
                         <p>{{ item.description }}</p>
                         <hr>
-                        {{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}} -
-                        {% if user.is_authenticated %}
-                            {% if creator or collaborator %}
-                                <form action="/list/{{list.slug}}/item/remove/" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="item_id" value="{{item.id}}"/>
-                                    <a href="#" type="submit">Delete</a>
-                                </form>
+                        <form class="form-inline" action="/item/{{item.id}}/delete/" method="POST">
+                            {% csrf_token %}
+                            {{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}} -
+                            {% if user.is_authenticated and creator or collaborator %}
+                             <button class="btn btn-link" type="submit">Delete</button>
                             {% endif %}
-                        {% endif %}
+                        </form>
                     </div>
                 {% endfor %}
             {% endif %}

@@ -176,3 +176,11 @@ hr.soften {
 .list-post hr {
     margin: 12px 0;
 }
+
+.list-post form {
+	margin: 0;
+}
+
+.list-post button.btn-link {
+	padding: 0;
+}
