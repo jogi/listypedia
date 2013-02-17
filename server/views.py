@@ -100,7 +100,7 @@ def view_list(request, slug):
     collaborator = False
     try:
         list = List.objects.get(slug=slug)
-        items = Item.objects.filter(list=list)
+        items = Item.objects.filter(list=list,active=True)
         if request.user.is_authenticated():
             try:
                 follower = Follower.objects.filter(user=request.user, list=list,active=True)
@@ -158,6 +158,21 @@ def add_item(request, slug):
                 'form': form,
                 'list': list
             })
+            
+@login_required
+def remove_item(request, slug):
+    logger.info("In add_item")
+    list = List.objects.get(slug=slug)
+    if request.method == 'POST':
+        item_id = request.POST["item_id"]
+        item = Item.objects.get(pk=item_id)
+        if item.user.id == request.user.id:
+            item.active = False
+            item.save()
+        return HttpResponseRedirect('/list/%s' % list.slug)
+    else:
+        raise Http404
+        
 
 
 @login_required
