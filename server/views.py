@@ -150,7 +150,7 @@ def add_item(request, slug):
             user = request.user
             item = Item.objects.create(name=name, description=description, url=url, list=list, user=user)
             if item:
-                followers = Follower.objects.filter(list=list)
+                followers = Follower.objects.filter(list=list,active=True)
                 emailutil.send_item_add_notification_email(user, list, item, followers)
                 return HttpResponseRedirect('/list/%s' % list.slug)
         else:
