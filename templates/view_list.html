@@ -56,13 +56,12 @@
             {% if not followed %}
             <form action="/list/{{list.slug}}/follow/" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-success btn-large btn-flat btn-block" href="/list/follow/"><i class="icon-check icon-white"></i> Follow List</button>
+                <button type="submit" class="btn btn-success btn-large btn-flat btn-block"><i class="icon-check icon-white"></i> Follow List</button>
             </form>
             {% else %}
-            <form action="/list/unfollow/" method="post">
+            <form action="/list/{{ list.slug }}/unfollow/" method="post">
             	{% csrf_token %}
-            	<input type="hidden" name="list_id" value="{{list.id}}"/>
-            	<button type="submit" class="btn btn-danger btn-large btn-flat btn-block" href="/list/unfollow/"><i class="icon-remove icon-white"></i> Unfollow List</button>
+            	<button type="submit" class="btn btn-danger btn-large btn-flat btn-block"><i class="icon-remove icon-white"></i> Unfollow List</button>
             </form>
             {% endif %}
             {% if creator %}

@@ -100,10 +100,10 @@ def view_list(request, slug):
     collaborator = False
     try:
         list = List.objects.get(slug=slug)
-        items = Item.objects.filter(list=list,active=True)
+        items = Item.objects.filter(list=list, active=True)
         if request.user.is_authenticated():
             try:
-                follower = Follower.objects.filter(user=request.user, list=list,active=True)
+                follower = Follower.objects.filter(user=request.user, list=list, active=True)
                 if follower:
                     followed = True
             except Follower.DoesNotExist:
@@ -150,7 +150,7 @@ def add_item(request, slug):
             user = request.user
             item = Item.objects.create(name=name, description=description, url=url, list=list, user=user)
             if item:
-                followers = Follower.objects.filter(list=list,active=True)
+                followers = Follower.objects.filter(list=list, active=True)
                 emailutil.send_item_add_notification_email(user, list, item, followers)
                 return HttpResponseRedirect('/list/%s' % list.slug)
         else:
@@ -158,7 +158,8 @@ def add_item(request, slug):
                 'form': form,
                 'list': list
             })
-            
+
+
 @login_required
 def delete_item(request, item_id):
     logger.info("In add_item")
@@ -219,7 +220,7 @@ def accept_invitation(request):
 
 
 @login_required
-def add_follower(request,slug):
+def add_follower(request, slug):
     logger.info("In follow_list")
     list = List.objects.get(slug=slug)
     user = request.user
@@ -244,24 +245,25 @@ def add_follower(request,slug):
             return HttpResponse(status=400)
     else:
         return HttpResponse(status=400)
-    
+
+
 @login_required
-def remove_follower(request):
+def remove_follower(request, slug):
     logger.info("In follow_list")
-    form = FollowerForm(request.POST)
-    if form.is_valid():
-        list_id = form.cleaned_data['list_id']
-        list = List.objects.get(pk=list_id)
-        user = request.user
-        follower = Follower.objects.get(user=user, list=list)
-        follower.active = False
-        follower.save()
-        if follower:
+    list = List.objects.get(slug=slug)
+    user = request.user
+    if request.method == 'GET':
+        return HttpResponseRedirect('/list/%s/' % list.slug)
+    elif request.method == 'POST':
+        try:
+            follower = Follower.objects.get(user=user, list=list)
+            follower.active = False
+            follower.save()
             return HttpResponseRedirect('/list/%s' % list.slug)
-        else:
+        except Follower.DoesNotExist:
             return HttpResponse(status=500)
     else:
-        return HttpResponse(status=500)
+        return HttpResponse(status=400)
 
 
 def search(request):
@@ -272,13 +274,14 @@ def search(request):
         'lists': lists,
         'query': query
     })
-    
+
+
 def page_info(request):
     url = request.GET["u"]
     page_info = {}
     page_info["url"] = url
     try:
-        soup = bs4.BeautifulSoup(urllib.urlopen(url),"lxml")
+        soup = bs4.BeautifulSoup(urllib.urlopen(url), "lxml")
         page_info["title"] = soup.title.string
     except:
         page_info["title"] = ""
