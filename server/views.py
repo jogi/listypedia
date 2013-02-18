@@ -286,3 +286,51 @@ def page_info(request):
     except:
         page_info["title"] = ""
     return HttpResponse(simplejson.dumps(page_info), mimetype='application/json')
+
+@login_required
+def add_item_bookmarklet(request, slug):
+    logger.info("In add_item")
+    list = List.objects.get(slug=slug)
+    if request.method == 'GET':
+        url = request.GET["u"]
+        name = request.GET["n"]
+        form = ItemForm()
+        return render(request, 'bookmarklet/add_item.html', {
+            'form': form,
+            'list': list,
+            'url': url,
+            'name': name
+        })
+    elif request.method == 'POST':
+        form = ItemForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            description = form.cleaned_data['description']
+            url = form.cleaned_data['url']
+            user = request.user
+            item = Item.objects.create(name=name, description=description, url=url, list=list, user=user)
+            if item:
+                followers = Follower.objects.filter(list=list,active=True)
+                emailutil.send_item_add_notification_email(user, list, item, followers)
+                return HttpResponseRedirect('/list/%s' % list.slug)
+        else:
+            return render(request, 'add_item.html', {
+                'form': form,
+                'list': list
+            })
+
+@login_required  
+def user_lists(request):
+    user = request.user
+    collaborators = Collaborator.objects.filter(user=user,active=True)
+    lists = List.objects.filter(user=user,active=True)
+    url = request.GET["u"]
+    name = request.GET["t"]
+    return render(request, 'bookmarklet/user_lists.html', {
+        'lists': lists,
+        'collaborators': collaborators,
+        'url': url,
+        'name': name
+    })
+
+
