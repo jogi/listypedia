@@ -1,0 +1,12 @@
+{% extends "email/base.html" %}
+{% block email_greeting %}
+Howdy! {{user.first_name}}&nbsp;{{user.last_name}}
+{% endblock %}
+{% block email_body %}
+You are now following <a href="http://www.listypedia.com/list/{{list.slug}}">{{list.name}}</a>.
+<br/>
+We will send you a notification when a new item is added to the list!
+<br/>
+<br/>
+Team Listypedia.
+{% endblock %}
