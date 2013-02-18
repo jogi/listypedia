@@ -110,7 +110,7 @@ def view_list(request, slug):
                 followed = False
 
             try:
-                collaborator_user = Collaborator.objects.get(user=request.user)
+                collaborator_user = Collaborator.objects.filter(user=request.user, list=list, active=True)
                 if collaborator_user:
                     collaborator = True
             except Collaborator.DoesNotExist:
