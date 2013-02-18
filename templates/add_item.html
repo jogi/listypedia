@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block extrajs %}
+<script src="/site_media/js/linkparser.js" type="text/javascript"></script>
+{% endblock %}
 {% block content %}
 <div class="page-header">
     <h1>Add Item to {{ list.name }}</h1>
@@ -7,15 +10,15 @@
     {% csrf_token %}
     <input type="hidden" name="s" value="{{ source }}">
     <div class="control-group">
-        <label class="control-label" for="name">Name</label>
+        <label class="control-label" for="url">URL</label>
         <div class="controls">
-            <input class="input-xxlarge" type="text" id="name" name="name" maxlength="300" placeholder="Clever name for the item" value="{{ name }}" /><span class="help-inline">{{ form.name.errors }}</span>
+            <input class="input-xxlarge" type="text" id="url" name="url" maxlength="300" placeholder="Can I haz a hyperlink to the itme?" value="{{ url }}" onchange="javascript:parselink(event);" /><span class="help-inline">{{ form.url.errors }}</span>
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="url">URL</label>
+        <label class="control-label" for="name">Name</label>
         <div class="controls">
-            <input class="input-xxlarge" type="text" id="url" name="url" maxlength="300" placeholder="Can I haz a hyperlink to the itme?" value="{{ url }}" /><span class="help-inline">{{ form.url.errors }}</span>
+            <input class="input-xxlarge" type="text" id="name" name="name" maxlength="300" placeholder="Clever name for the item" value="{{ name }}"/><span class="help-inline">{{ form.name.errors }}</span>
         </div>
     </div>
     <div class="control-group">
