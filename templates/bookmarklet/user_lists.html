@@ -1,22 +1,19 @@
 {% extends "bookmarklet/base.html" %}
-{% load humanize %}
 {% block content %}
 <div class="page-header">
-    <h1>Select One of the list</h1>
+    <h1>To which list do you want to add the item?</h1>
 </div>
 <div class="row">
     <div class="span12">
         {% if lists.count > 0 %}
             {% for list in lists %}
-            <div>
-                <h3><a href="/list/{{ list.slug }}/b/item/add/?u={{url}}&n={{name}}">{{ list.name }}</a></h3>
-                <hr>
+            <div class="list-post">
+                <h3><a href="/list/{{ list.slug }}/item/add/?n={{name}}&s=b&u={{url}}">{{ list.name }}</a></h3>
             </div>
             {% endfor %}
             {% for collaborator in collaborators %}
-            <div>
-                <h3><a href="/list/{{ collaborator.list.slug }}/b/item/add/?u={{url}}&n={{name}}">{{ list.name }}</a></h3>
-                <hr>
+            <div class="list-post">
+                <h3><a href="/list/{{ collaborator.list.slug }}/item/add/?n={{name}}&s=b&u={{url}}">{{ list.name }}</a></h3>
             </div>
             {% endfor %}
         {% else %}

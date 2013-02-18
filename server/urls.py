@@ -24,5 +24,5 @@ urlpatterns = patterns('',
     url(r'^item/(?P<item_id>[0-9]+)/delete/', 'server.views.delete_item', name='delete_item'),
     url(r'^list/invitation/accept/', 'server.views.accept_invitation', name='accept_invitation'),
     url(r'^pageinfo/', 'server.views.page_info', name='page_info'),
-    url(r'^user/b/lists/', 'server.views.user_lists', name='user_lists'),
+    url(r'^b/lists/', 'server.views.user_lists', name='user_lists'),
 )

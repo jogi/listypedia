@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from models import CollaborationInvitation
 
+
 class ListForm(forms.Form):
     name = forms.CharField(max_length=300, required=True)
     description = forms.CharField(required=False)
@@ -47,6 +48,7 @@ class LoginForm(forms.Form):
 class CollaborationInvitationForm(forms.Form):
     list_id = forms.IntegerField(required=True)
     email = forms.EmailField(required=True)
+
     def clean_email(self):
         email = self.cleaned_data['email']
         list_id = self.cleaned_data['list_id']

@@ -136,13 +136,20 @@ def add_item(request, slug):
     logger.info("In add_item")
     list = List.objects.get(slug=slug)
     if request.method == 'GET':
+        source = request.GET.get('s', '')
+        url = request.GET.get('u', '')
+        name = request.GET.get('n', '')
         form = ItemForm()
         return render(request, 'add_item.html', {
             'form': form,
-            'list': list
+            'list': list,
+            'url': url,
+            'name': name,
+            'source': source
         })
     elif request.method == 'POST':
         form = ItemForm(request.POST)
+        source = request.POST.get('s', '')
         if form.is_valid():
             name = form.cleaned_data['name']
             description = form.cleaned_data['description']
@@ -152,11 +159,15 @@ def add_item(request, slug):
             if item:
                 followers = Follower.objects.filter(list=list, active=True)
                 emailutil.send_item_add_notification_email(user, list, item, followers)
-                return HttpResponseRedirect('/list/%s' % list.slug)
+                if source == 'b':
+                    return render(request, 'bookmarklet/close.html')
+                else:
+                    return HttpResponseRedirect('/list/%s' % list.slug)
         else:
             return render(request, 'add_item.html', {
                 'form': form,
-                'list': list
+                'list': list,
+                'source': source
             })
 
 
@@ -207,7 +218,6 @@ def invite_collaborator(request, slug):
 @login_required
 def accept_invitation(request):
     logger.info("In accept_invitation")
-    print "in accept"
     try:
         code = request.GET["c"]
         invitation = CollaborationInvitation.objects.get(code=code)
@@ -267,7 +277,6 @@ def remove_follower(request, slug):
 
 
 def search(request):
-    print repr(request.POST)
     query = request.POST['q']
     lists = List.sobjects.search(query)
     return render(request, 'search.html', {
@@ -287,50 +296,17 @@ def page_info(request):
         page_info["title"] = ""
     return HttpResponse(simplejson.dumps(page_info), mimetype='application/json')
 
-@login_required
-def add_item_bookmarklet(request, slug):
-    logger.info("In add_item")
-    list = List.objects.get(slug=slug)
-    if request.method == 'GET':
-        url = request.GET["u"]
-        name = request.GET["n"]
-        form = ItemForm()
-        return render(request, 'bookmarklet/add_item.html', {
-            'form': form,
-            'list': list,
-            'url': url,
-            'name': name
-        })
-    elif request.method == 'POST':
-        form = ItemForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            description = form.cleaned_data['description']
-            url = form.cleaned_data['url']
-            user = request.user
-            item = Item.objects.create(name=name, description=description, url=url, list=list, user=user)
-            if item:
-                followers = Follower.objects.filter(list=list,active=True)
-                emailutil.send_item_add_notification_email(user, list, item, followers)
-                return HttpResponseRedirect('/list/%s' % list.slug)
-        else:
-            return render(request, 'add_item.html', {
-                'form': form,
-                'list': list
-            })
 
-@login_required  
+@login_required
 def user_lists(request):
     user = request.user
-    collaborators = Collaborator.objects.filter(user=user,active=True)
-    lists = List.objects.filter(user=user,active=True)
+    collaborators = Collaborator.objects.filter(user=user, active=True)
+    lists = List.objects.filter(user=user, active=True)
     url = request.GET["u"]
-    name = request.GET["t"]
+    name = request.GET["n"]
     return render(request, 'bookmarklet/user_lists.html', {
         'lists': lists,
         'collaborators': collaborators,
         'url': url,
         'name': name
     })
-
-
