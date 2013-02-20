@@ -12,7 +12,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 if 'DEBUG' not in os.environ:
-    raise ImproperlyConfigured, "please set DEBUG to True or False for your environment"
+    raise ImproperlyConfigured("please set DEBUG to True or False for your environment")
 
 #Values accessed through os.environ are strings. So DEBUG needs to be converted to bool.
 DEBUG = True if (os.environ['DEBUG'] == 'True') else False
@@ -24,7 +24,7 @@ ROOT_DIR = os.path.join(os.path.dirname(__file__), '..')
 import dj_database_url
 
 if 'DATABASE_URL' not in os.environ:
-    raise ImproperlyConfigured, "please set DATABASE_URL in your environment"
+    raise ImproperlyConfigured("please set DATABASE_URL in your environment")
 
 DATABASES = {
     'default': dj_database_url.config(default=os.environ['DATABASE_URL'])
@@ -60,7 +60,7 @@ MEDIA_ROOT = os.path.join(ROOT_DIR, 'site_media/')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'http://localhost:8000/site_media/'
+MEDIA_URL = 'http://www.listypedia.com/site_media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -180,6 +180,7 @@ LOGGING = {
     }
 }
 
+EMBEDLY_KEY = '2b287b78309f4f62b64a8bfa5bc0c88c'
 AWS_ACCESS_KEY_ID = 'AKIAIFDTEKEQWMJIIBWQ'
 AWS_SECRET_ACCESS_KEY = 'FdTbbomGTPTt2JSeM7uGeahSnoBLzrJNYuMdwpTX'
 EMAIL_BACKEND = 'django_ses.SESBackend'
