@@ -126,6 +126,7 @@ hr.soften {
 .header {
   color: #5a5a5a;
 }
+
 .header .header-byline {
   margin-bottom: 40px;
   font-size: 20px;
@@ -133,10 +134,12 @@ hr.soften {
   line-height: 25px;
   color: #999;
 }
+
 .header p {
   font-size: 16px;
   line-height: 1.5;
 }
+
 .header h1 {
   margin: 20px 0 10px;
   font-size: 60px;
@@ -144,6 +147,7 @@ hr.soften {
   line-height: 1;
   letter-spacing: -1px;
 }
+
 .header h2 {
   font-weight: 200;
   margin-bottom: 5px;

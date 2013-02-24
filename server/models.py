@@ -32,6 +32,14 @@ class List(BaseModel):
         auto_update_search_field=True
     )
 
+    @property
+    def followers(self):
+        return self.follower_set.all()
+
+    @property
+    def collaborators(self):
+        return self.collaborator_set.all()
+
 
 class Item(BaseModel):
     name = models.CharField(max_length=300)

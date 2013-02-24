@@ -21,8 +21,8 @@ def index(request):
 
 @login_required
 def home(request):
-    your_lists = List.objects.filter(user=request.user)
-    followed_lists = List.objects.filter(user=request.user)
+    your_lists = List.objects.get_lists_by_user(request.user)
+    followed_lists = List.objects.get_followed_lists_by_user(request.user)
 
     return render(request, 'home.html', {
         'your_lists': your_lists,

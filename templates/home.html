@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 {% block content %}
 <div class="marketing">
     <h1>Create curated list of items with Listypedia.</h1>
@@ -13,7 +14,33 @@
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane active" id="followed"><p class="lead">Nothing. Yet.</p></div>
-    <div class="tab-pane" id="your"><p class="lead">Nothing. Yet.</p></div>
+    <div class="tab-pane active" id="followed">
+        {% if followed_lists.count > 0 %}
+            {% for list in followed_lists %}
+            <div>
+                <h3><a href="/list/{{ list.slug }}/">{{ list.name }}</a></h3>
+                <p class="lead">{{ list.description }}</p>
+                {{ list.user.first_name}} {{ list.user.last_name }} - {{ list.created|naturaltime}}
+                <hr>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="lead">Nothing. Yet.</p>
+        {% endif %}
+    </div>
+    <div class="tab-pane" id="your">
+        {% if your_lists.count > 0 %}
+            {% for list in your_lists %}
+            <div>
+                <h3><a href="/list/{{ list.slug }}/">{{ list.name }}</a></h3>
+                <p class="lead">{{ list.description }}</p>
+                {{ list.user.first_name}} {{ list.user.last_name }} - {{ list.created|naturaltime}}
+                <hr>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="lead">Nothing. Yet.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
