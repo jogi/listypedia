@@ -36,6 +36,14 @@ class List(BaseModel):
     @property
     def followers(self):
         return self.follower_set.all()
+    
+    @property
+    def items(self):
+        return self.item_set.all()
+    
+    @property
+    def featured_items(self):
+        return self.item_set.all()[:3]
 
     @property
     def collaborators(self):

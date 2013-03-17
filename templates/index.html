@@ -36,6 +36,14 @@
     <div class="row-fluid text-center">
         <a class="btn btn-primary btn-large btn-flat" href="/signup/">Sign up</a>
     </div>
-
+    <div>
+    	{% for featured_list in featured_lists %}
+    		{{featured_list.name}}
+    	    {% for item in featured_list.featured_items %}
+    	    	item - {{item.name}}<br/>
+    		{%endfor%}
+    		<br />
+    	{%endfor%}
+    </div>
 </div>
 {% endblock %}
