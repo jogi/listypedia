@@ -16,8 +16,10 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
-    return render(request, 'index.html')
-
+    featured_lists = List.objects.filter(featured=True)[:10]
+    return render(request, 'index.html', {
+        'featured_lists': featured_lists,
+    })
 
 @login_required
 def home(request):

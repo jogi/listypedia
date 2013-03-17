@@ -22,6 +22,7 @@ class List(BaseModel):
     description = models.TextField()
     user = models.ForeignKey(User, null=False)
     privacy_level = models.IntegerField(default=1)
+    featured = models.BooleanField(default=False)
     search_index = VectorField()
 
     objects = managers.ListManager()
