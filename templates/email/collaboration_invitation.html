@@ -5,7 +5,7 @@ Hi,
 {% block email_body %}
 {{user.first_name}}&nbsp;{{user.last_name}} has invited you to collaborate on {{list.name}} list! Please click on the link below to accept the invitation:
 <br>
-<a href="http://www.listypedia.com/list/invitation?c={{collabaration_invitation.code}}">{{list.name}}</a>
+<a href="http://www.listypedia.com/list/invitation/accept/?c={{collabaration_invitation.code}}">{{list.name}}</a>
 <br/>
 <br/>
 Team Listypedia.

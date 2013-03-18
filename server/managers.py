@@ -10,7 +10,7 @@ class ListManager(models.Manager):
         return super(ListManager, self).create(name=name, slug=slug, description=description, user=user)
 
     def get_lists_by_user(self, user, collaborator=True):
-        query = Q(user=user)
+        query = Q(user=user) | Q(active=True)
         if collaborator:
             query = query | Q(collaborator=user)
         return super(ListManager, self).filter(query)

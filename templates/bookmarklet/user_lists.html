@@ -11,11 +11,6 @@
                 <h3><a href="/{{ list.url }}/item/add/?n={{name}}&s=b&u={{url}}">{{ list.name }}</a></h3>
             </div>
             {% endfor %}
-            {% for collaborator in collaborators %}
-            <div class="list-post">
-                <h3><a href="/{{ collaborator.list.url }}/item/add/?n={{name}}&s=b&u={{url}}">{{ list.name }}</a></h3>
-            </div>
-            {% endfor %}
         {% else %}
             <p class="lead">No lists found.</p>
         {% endif %}

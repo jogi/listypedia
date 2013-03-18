@@ -303,14 +303,11 @@ def page_info(request):
 
 @login_required
 def user_lists(request):
-    user = request.user
-    collaborators = Collaborator.objects.filter(user=user, active=True)
-    lists = List.objects.filter(user=user, active=True)
+    lists = List.objects.get_lists_by_user(request.user)
     url = request.GET["u"]
     name = request.GET["n"]
     return render(request, 'bookmarklet/user_lists.html', {
         'lists': lists,
-        'collaborators': collaborators,
         'url': url,
         'name': name
     })
