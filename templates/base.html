@@ -47,11 +47,20 @@
                             <ul class="nav pull-right">
                                 <li class="divider-vertical"></li>
                                 {% if user.is_authenticated %}
-                                <li><a href="/logout/"><i class="icon-user"></i> Sign Out</a></li>
+
+                                    <li class="dropdown">
+                                        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon-user"></i> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/home/">Home</a></li>
+                                            <li class="divider"></li>
+                                            <li><li><a href="/logout/"><i class="icon-off"></i> Sign Out</a></li></li>
+                                        </ul>
+                                    </li>
                                 {% else %}
                                 <li><a href="/login/"><i class="icon-user"></i> Sign In</a></li>
                                 {% endif %}
                             </ul>
+                            <a class="btn btn-primary pull-right" style="margin-left: 5px;" href="/list/create">Create List</a>
                             <form action="/search/" method="POST" class="navbar-search pull-right">
                                 {% csrf_token %}
                                 <input type="text" name="q" placeholder="Search" class="search-query span3">

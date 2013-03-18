@@ -2,27 +2,38 @@
 {% load humanize %}
 {% block content %}
 <div class="marketing">
-    <h1>Create curated list of items with Listypedia.</h1>
-    <p class="marketing-byline">Create lists about places to visit, good restaurants, open source components. Anything that can be a list goes here.</p>
-    <br/>
-    <a class="btn btn-primary btn-large btn-flat" href="/list/create/">Create List</a>
+    <div class="row" style="margin-top: 20px;">
+        <div class="span5 offset2">
+            <h2 class="home">Create your own lists.</h2>
+        </div>
+        <div class="span2">
+            <a class="btn btn-primary btn-large btn-flat" href="/list/create/">Create List</a>
+        </div>
+
+    </div>
+</span>
 </div>
 <hr class="soften">
-<ul class="nav nav-pills" id="home">
-    <li class="active"><a data-toggle="tab" href="#followed">Followed Lists</a></li>
-    <li><a data-toggle="tab" href="#your">Your Lists</a></li>
-</ul>
+<div class="pull-center">
+    <ul class="nav nav-pills" id="home">
+        <li class="active"><a data-toggle="tab" href="#followed">Followed Lists</a></li>
+        <li><a data-toggle="tab" href="#your">Your Lists</a></li>
+    </ul>
+</div>
 
 <div class="tab-content">
     <div class="tab-pane active" id="followed">
         {% if followed_lists.count > 0 %}
             {% for list in followed_lists %}
-            <div>
-                <h3><a href="/{{ list.url }}/">{{ list.name }}</a></h3>
-                <p class="lead">{{ list.description }}</p>
-                {{ list.user.first_name}} {{ list.user.last_name }} - {{ list.created|naturaltime}}
-                <hr>
-            </div>
+                {% if forloop.counter0|divisibleby:"3" %}
+                <div class="row">
+                {% endif %}
+                <div class="span4">
+                    {% include "list-widget.html" %}
+                </div>
+                {% if forloop.last or forloop.counter|divisibleby:"3" %}
+                </div>
+                {% endif %}
             {% endfor %}
         {% else %}
             <p class="lead">Nothing. Yet.</p>
@@ -31,12 +42,15 @@
     <div class="tab-pane" id="your">
         {% if your_lists.count > 0 %}
             {% for list in your_lists %}
-            <div>
-                <h3><a href="/{{ list.url }}/">{{ list.name }}</a></h3>
-                <p class="lead">{{ list.description }}</p>
-                {{ list.user.first_name}} {{ list.user.last_name }} - {{ list.created|naturaltime}}
-                <hr>
-            </div>
+                {% if forloop.counter0|divisibleby:"3" %}
+                <div class="row">
+                {% endif %}
+                <div class="span4">
+                    {% include "list-widget.html" %}
+                </div>
+                {% if forloop.last or forloop.counter|divisibleby:"3" %}
+                </div>
+                {% endif %}
             {% endfor %}
         {% else %}
             <p class="lead">Nothing. Yet.</p>

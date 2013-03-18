@@ -1,0 +1,24 @@
+<div class="list-widget">
+    <a href="/{{ list.url }}/"><h4>{{ list.name }}</h4></a>
+    <hr>
+    <ul class="unstyled">
+        {% for item in list.featured_items %}
+            <li>
+                {% if item.url %}
+                    <img class="fav" src="https://www.google.com/s2/u/0/favicons?domain={{ item.url_domain }}">
+                    <span>
+                        <a href="{{ item.url }}">{{ item.name }}</a>
+                    </span>
+                {% else %}
+                    <img class="fav" src="https://www.google.com/s2/u/0/favicons?domain=listypedia.com">
+                    <span>
+                        {{ item.name }}
+                    </span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <span class="all-link">
+        <a href="/{{ list.url }}/">View all items →</a>
+    </span>
+</div>

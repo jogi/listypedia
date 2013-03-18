@@ -28,15 +28,16 @@
             {% if items %}
                 {% for item in items %}
                     <div class="list-post">
-                        <h3>
-                            {% if item.url %}
-                                <a href="{{ item.url }}">{{ item.name }}</a>
-                            {% else %}
-                                {{ item.name }}
-                            {% endif %}
-                        </h3>
-                        <p>{{ item.description }}</p>
-                        <hr>
+                        {% if item.url %}
+                            <a href="{{ item.url }}"><img class="fav" src="https://www.google.com/s2/u/0/favicons?domain={{ item.url_domain }}">&nbsp;&nbsp;<span class="list-post-link">{{ item.name }}</span></a>
+                        {% else %}
+                            <img class="fav" src="https://www.google.com/s2/u/0/favicons?domain=listypedia.com">&nbsp;&nbsp;<span class="list-post-text">{{ item.name }}</span>
+                        {% endif %}
+                        {% if item.description %}
+                            <blockquote>
+                                <p>{{ item.description }}</p>
+                            </blockquote>
+                        {% endif %}
                         <form class="form-inline" action="/item/{{item.id}}/delete/" method="POST">
                             {% csrf_token %}
                             <span class="light-text">{{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}}</span>

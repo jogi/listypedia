@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
-    featured_lists = List.objects.filter(featured=True)[:10]
+    featured_lists = List.objects.filter(featured=True)[:9]
     return render(request, 'index.html', {
         'featured_lists': featured_lists,
     })
@@ -160,8 +160,9 @@ def add_item(request, slug):
             user = request.user
             item = Item.objects.create(name=name, description=description, url=url, list=list, user=user)
             if item:
-                followers = Follower.objects.filter(list=list, active=True)
-                emailutil.send_item_add_notification_email(user, list, item, followers)
+                #TODO: add weekly/daily digest emails
+                #followers = Follower.objects.filter(list=list, active=True)
+                #emailutil.send_item_add_notification_email(user, list, item, followers)
                 if source == 'b':
                     return render(request, 'bookmarklet/close.html')
                 else:
