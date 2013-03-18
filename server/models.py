@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from djorm_pgfulltext.models import SearchManager
 from djorm_pgfulltext.fields import VectorField
 
+from autoslug import AutoSlugField
+
 from server import managers
 
 
@@ -20,7 +22,7 @@ class BaseModel(models.Model):
 
 class List(BaseModel):
     name = models.CharField(max_length=300, null=False)
-    slug = models.SlugField(max_length=300, null=False, unique=True, db_index=True)
+    slug = AutoSlugField(populate_from='name', null=False, unique=True, db_index=True)
     description = models.TextField()
     user = models.ForeignKey(User, null=False)
     privacy_level = models.IntegerField(default=1)

@@ -6,8 +6,7 @@ from django.template.defaultfilters import slugify
 
 class ListManager(models.Manager):
     def create_list(self, name, description, user):
-        slug = slugify(name)
-        return super(ListManager, self).create(name=name, slug=slug, description=description, user=user)
+        return super(ListManager, self).create(name=name, description=description, user=user)
 
     def get_lists_by_user(self, user, collaborator=True):
         query = Q(user=user) | Q(active=True)
