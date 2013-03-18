@@ -8,12 +8,12 @@
         {% if lists.count > 0 %}
             {% for list in lists %}
             <div class="list-post">
-                <h3><a href="/list/{{ list.slug }}/item/add/?n={{name}}&s=b&u={{url}}">{{ list.name }}</a></h3>
+                <h3><a href="/{{ list.url }}/item/add/?n={{name}}&s=b&u={{url}}">{{ list.name }}</a></h3>
             </div>
             {% endfor %}
             {% for collaborator in collaborators %}
             <div class="list-post">
-                <h3><a href="/list/{{ collaborator.list.slug }}/item/add/?n={{name}}&s=b&u={{url}}">{{ list.name }}</a></h3>
+                <h3><a href="/{{ collaborator.list.url }}/item/add/?n={{name}}&s=b&u={{url}}">{{ list.name }}</a></h3>
             </div>
             {% endfor %}
         {% else %}

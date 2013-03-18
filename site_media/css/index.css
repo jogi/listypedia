@@ -7,6 +7,10 @@ body {
   /* The html and body elements cannot have any padding or margin. */
 }
 
+.pull-center {
+    text-align: center;
+}
+
 /* Wrapper for page content to push down footer */
 #wrap {
   min-height: 100%;
@@ -251,4 +255,48 @@ hr.soften {
 
 .light-text {
     color: #999999;
+}
+
+.featured h2 {
+    font-weight: 200;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 30px;
+}
+
+.list-widget {
+    padding: 15px;
+    background-color: white;
+      -webkit-border-radius: 4px;
+         -moz-border-radius: 4px;
+              border-radius: 4px;
+      -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+         -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+              box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.list-widget h4 {
+    font-weight: 200;
+    line-height: 1;
+    color: #F57468;
+}
+
+.list-widget li {
+    height: 28px;
+    line-height: 28px;
+    overflow: hidden;
+}
+
+.list-widget .fav {
+    background-position: 0 0;
+    height: 16px;
+    width: 16px;
+}
+
+.list-widget ul li > span {
+    margin-left: 3px;
+}
+
+.list-widget span.all-link {
+    margin-left: 23px;
 }

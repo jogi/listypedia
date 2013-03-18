@@ -18,7 +18,7 @@
         {% if followed_lists.count > 0 %}
             {% for list in followed_lists %}
             <div>
-                <h3><a href="/list/{{ list.slug }}/">{{ list.name }}</a></h3>
+                <h3><a href="/{{ list.url }}/">{{ list.name }}</a></h3>
                 <p class="lead">{{ list.description }}</p>
                 {{ list.user.first_name}} {{ list.user.last_name }} - {{ list.created|naturaltime}}
                 <hr>
@@ -32,7 +32,7 @@
         {% if your_lists.count > 0 %}
             {% for list in your_lists %}
             <div>
-                <h3><a href="/list/{{ list.slug }}/">{{ list.name }}</a></h3>
+                <h3><a href="/{{ list.url }}/">{{ list.name }}</a></h3>
                 <p class="lead">{{ list.description }}</p>
                 {{ list.user.first_name}} {{ list.user.last_name }} - {{ list.created|naturaltime}}
                 <hr>

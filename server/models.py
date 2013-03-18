@@ -1,3 +1,5 @@
+from urlparse import urlparse
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -34,16 +36,20 @@ class List(BaseModel):
     )
 
     @property
+    def url(self):
+        return 'list/%s' % self.slug
+
+    @property
     def followers(self):
         return self.follower_set.all()
-    
+
     @property
     def items(self):
         return self.item_set.all()
-    
+
     @property
     def featured_items(self):
-        return self.item_set.all()[:3]
+        return self.item_set.filter(active=True)[:3]
 
     @property
     def collaborators(self):
@@ -65,6 +71,13 @@ class Item(BaseModel):
         search_field='search_index',  # this is default
         auto_update_search_field=True
     )
+
+    @property
+    def url_domain(self):
+        if self.url:
+            return urlparse(self.url).hostname
+        else:
+            return 'listypedia.com'
 
 
 class CollaborationInvitation(BaseModel):

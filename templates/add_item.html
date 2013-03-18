@@ -6,7 +6,7 @@
 <div class="page-header">
     <h1>Add Item to {{ list.name }}</h1>
 </div>
-<form class="form-vertical" action="/list/{{ list.slug }}/item/add/" method="POST">
+<form class="form-vertical" action="/{{ list.url }}/item/add/" method="POST">
     {% csrf_token %}
     <input type="hidden" name="s" value="{{ source }}">
     <div class="control-group">

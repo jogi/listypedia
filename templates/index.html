@@ -1,49 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="marketing">
-
-    <h1 class="logo lobster"><img src="/site_media/images/listypedia-list-66.png">Listypedia</h1>
-    <p class="marketing-byline">Social, Curated lists.</p>
-    <br>
-    <div class="row">
-        <div class="span4 offset4">
-            <form class="form-search" action="/search/" method="POST">
-                {% csrf_token %}
-                <div class="input-prepend input-append">
-                    <span class="add-on"><i class="icon-search"></i></span>
-                    <input type="text" name="q" class="span3 appendedPrependedInput">
-                    <button type="submit" class="btn">Search</button>
-                </div>
-            </form>
+<div class="row">
+    <div class="span8">
+        <div class="header">
+            <h1>Create social, curated Lists</h1>
+            <p class="header-byline">about places to vist, good restaurants, open source components</p>
         </div>
+        <a class="btn btn-primary btn-large btn-flat" href="/list/create/">Create your own List</a>
     </div>
-    <br>
-    <div class="row">
-        <div class="span4 offset2">
-            <h2>Social</h2>
-            <p>Listypedia is simple way to create and manage lists. It enables the users to share list with friends and colleagues and also invite them to collaborate.</p>
-        </div>
-        <div class="span4">
-            <h2>Curated</h2>
-            <p>Only the creators and the collabarators of the list can add to the lists. This ensures the quality of the items that are added to the lists.</p>
-        </div>
-    </div>
-
-    <hr class="soften">
-
-    <h1>Sign up now.</h1>
-    <p class="marketing-byline">It's free.</p>
-    <div class="row-fluid text-center">
-        <a class="btn btn-primary btn-large btn-flat" href="/signup/">Sign up</a>
-    </div>
-    <div>
-    	{% for featured_list in featured_lists %}
-    		{{featured_list.name}}
-    	    {% for item in featured_list.featured_items %}
-    	    	item - {{item.name}}<br/>
-    		{%endfor%}
-    		<br />
-    	{%endfor%}
+    <div class="span4" style="margin-top: 64px;">
+        <form class="form-search" action="/search/" method="POST">
+            {% csrf_token %}
+            <div class="input-prepend input-append">
+                <span class="add-on"><i class="icon-search"></i></span>
+                <input type="text" name="q" class="span3 appendedPrependedInput">
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </form>
     </div>
 </div>
+<hr class="soften">
+<div class="featured">
+    <h2 class="pull-center">See what others are listing</h2>
+    {% for list in featured_lists %}
+    {% if forloop.counter0|divisibleby:"3" %}
+    <div class="row">
+    {% endif %}
+    <div class="span4 list-widget">
+        <a href="/{{ list.url }}/"><h4>{{ list.name }}</h4></a>
+        <hr>
+        <ul class="unstyled">
+            {% for item in list.featured_items %}
+                <li>
+                    {% if item.url %}
+                        <img class="fav" src="https://www.google.com/s2/u/0/favicons?domain={{ item.url_domain }}">
+                        <span>
+                            <a href="{{ item.url }}">{{ item.name }}</a>
+                        </span>
+                    {% else %}
+                        <img class="fav" src="https://www.google.com/s2/u/0/favicons?domain=listypedia.com">
+                        <span>
+                            {{ item.name }}
+                        </span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <span class="all-link">
+            <a href="/{{ list.url }}/">View all items →</a>
+        </span>
+    </div>
+    {% if forloop.last or forloop.counter|divisibleby:"3" %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+
 {% endblock %}

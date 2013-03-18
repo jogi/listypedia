@@ -39,9 +39,9 @@
                         <hr>
                         <form class="form-inline" action="/item/{{item.id}}/delete/" method="POST">
                             {% csrf_token %}
-                            <span class="light-text">{{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}} -</span>
+                            <span class="light-text">{{ item.user.first_name}} {{ item.user.last_name }} - {{ item.created|naturaltime}}</span>
                             {% if user.is_authenticated and creator or collaborator %}
-                             <button class="btn btn-link" type="submit">Delete</button>
+                             - <button class="btn btn-link" type="submit">Delete</button>
                             {% endif %}
                         </form>
                     </div>
@@ -50,34 +50,34 @@
         </div>
         <div class="span3">
         	{% if collaborator %}
-            <a class="btn btn-primary btn-large btn-flat btn-block" href="/list/{{ list.slug }}/item/add/"><i class="icon-plus icon-white"></i> Add Item</a>
+            <a class="btn btn-primary btn-large btn-flat btn-block" href="/{{ list.url }}/item/add/"><i class="icon-plus icon-white"></i> Add Item</a>
             <br>
             {% endif %}
             {% if not followed %}
-            <form action="/list/{{list.slug}}/follow/" method="post">
+            <form action="/{{ list.url }}/follow/" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-success btn-large btn-flat btn-block"><i class="icon-check icon-white"></i> Follow List</button>
             </form>
             {% else %}
-            <form action="/list/{{ list.slug }}/unfollow/" method="post">
+            <form action="/{{ list.url }}/unfollow/" method="post">
             	{% csrf_token %}
             	<button type="submit" class="btn btn-danger btn-large btn-flat btn-block"><i class="icon-remove icon-white"></i> Unfollow List</button>
             </form>
             {% endif %}
             {% if creator %}
-                <a class="btn btn-info btn-large btn-flat btn-block" href="/list/{{list.slug}}/invite/"><i class="icon-user icon-white"></i> Invite Collaborator</a>
+                <a class="btn btn-info btn-large btn-flat btn-block" href="/{{ list.url }}/invite/"><i class="icon-user icon-white"></i> Invite Collaborator</a>
             	<br>
             {% endif %}
             <div>
                 <h4>Listypedia Bookmarklet</h4>
-                <a class="btn btn-primary btn-large btn-flat btn-block" title="You can use bookmarklet to share item from anywhere. Just drag the bookmarklet to your bookmarks bar." data-toogle="tooltip" href="javascript:var%20_d=document;var%20_e=encodeURIComponent;var%20n=_d.title;var%20u=_d.location.href;var%20w=window.open('http://localhost:8000/b/lists/?n='+_e(n)+'&u='%20+%20_e(u),%20'postOnListypedia',%20'width=600,height=600');"><i class="icon-share icon-white"></i> List it</a>
+                <a class="btn btn-primary btn-large btn-flat btn-block" title="You can use bookmarklet to share item from anywhere. Just drag the bookmarklet to your bookmarks bar." data-toogle="tooltip" href="javascript:var%20_d=document;var%20_e=encodeURIComponent;var%20n=_d.title;var%20u=_d.location.href;var%20w=window.open('http://www.listypedia.com/b/lists/?n='+_e(n)+'&u='%20+%20_e(u),%20'postOnListypedia',%20'width=600,height=600');"><i class="icon-share icon-white"></i> List it</a>
             </div>
             <div>
                 <h4>Share list</h4>
                 <br/>
-                <fb:like href="http://www.listypedia.com/list/{{ list.slug }}/" send="false" layout="box_count" width="450" show_faces="true" action="like"></fb:like>
+                <fb:like href="http://www.listypedia.com/{{ list.url }}/" send="false" layout="box_count" width="450" show_faces="true" action="like"></fb:like>
                 &nbsp;&nbsp;&nbsp;
-                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.listypedia.com/list/{{ list.slug }}/" data-count="vertical" data-text="{{ list.name }}" data-via="Listypedia" data-size="medium" data-related="Listypedia" data-hashtags="listypedia">Tweet</a>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.listypedia.com/{{ list.url }}/" data-count="vertical" data-text="{{ list.name }}" data-via="Listypedia" data-size="medium" data-related="Listypedia" data-hashtags="listypedia">Tweet</a>
             </div>
             <hr>
             <h4>Created By</h4>

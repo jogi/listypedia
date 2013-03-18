@@ -21,6 +21,7 @@ def index(request):
         'featured_lists': featured_lists,
     })
 
+
 @login_required
 def home(request):
     your_lists = List.objects.get_lists_by_user(request.user)
@@ -52,7 +53,7 @@ def create_list(request):
                 follower = Follower.objects.create_follower(user=user, list=list)
                 if follower:
                     #emailutil.send_follow_confirmation_email(user, list)
-                    return HttpResponseRedirect('/list/%s' % list.slug)
+                    return HttpResponseRedirect('/%s' % list.url)
                 else:
                     return HttpResponse(status=500)
         else:
@@ -164,7 +165,7 @@ def add_item(request, slug):
                 if source == 'b':
                     return render(request, 'bookmarklet/close.html')
                 else:
-                    return HttpResponseRedirect('/list/%s' % list.slug)
+                    return HttpResponseRedirect('/%s' % list.url)
         else:
             return render(request, 'add_item.html', {
                 'form': form,
@@ -184,7 +185,7 @@ def delete_item(request, item_id):
             item.save()
         else:
             return HttpResponse(status=403)
-        return HttpResponseRedirect('/list/%s/' % item.list.slug)
+        return HttpResponseRedirect('/%s/' % item.list.url)
     else:
         return HttpResponse(status=400)
 
@@ -207,7 +208,7 @@ def invite_collaborator(request, slug):
             collabarator_invitation = CollaborationInvitation.objects.create(user=user, list=list, email=email, code=uuid.uuid1())
             if collabarator_invitation:
                 emailutil.send_collabaration_invitation_email(user, list, collabarator_invitation)
-                return HttpResponseRedirect('/list/%s/invite' % list.slug)
+                return HttpResponseRedirect('/%s/invite' % list.url)
         else:
             current_collaborators = CollaborationInvitation.objects.filter(list=list)
             return render(request, 'collaboration_invitation.html', {
@@ -226,7 +227,7 @@ def accept_invitation(request):
         if invitation:
             collaborator = Collaborator.objects.create(user=request.user, list=invitation.list)
             if collaborator:
-                return HttpResponseRedirect('/list/%s/item/add/' % invitation.list.slug)
+                return HttpResponseRedirect('/%s/item/add/' % invitation.list.url)
     except CollaborationInvitation.DoesNotExist:
         raise Http404
 
@@ -237,7 +238,7 @@ def add_follower(request, slug):
     list = List.objects.get(slug=slug)
     user = request.user
     if request.method == 'GET':
-        return HttpResponseRedirect('/list/%s/' % list.slug)
+        return HttpResponseRedirect('/%s/' % list.url)
     elif request.method == 'POST':
         try:
             follower = Follower.objects.get(user=user, list=list)
@@ -265,13 +266,13 @@ def remove_follower(request, slug):
     list = List.objects.get(slug=slug)
     user = request.user
     if request.method == 'GET':
-        return HttpResponseRedirect('/list/%s/' % list.slug)
+        return HttpResponseRedirect('/%s/' % list.url)
     elif request.method == 'POST':
         try:
             follower = Follower.objects.get(user=user, list=list)
             follower.active = False
             follower.save()
-            return HttpResponseRedirect('/list/%s' % list.slug)
+            return HttpResponseRedirect('/%s/' % list.url)
         except Follower.DoesNotExist:
             return HttpResponse(status=500)
     else:
