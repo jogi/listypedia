@@ -1,7 +1,6 @@
 
 from django.db import models
 from django.db.models import Q
-from django.template.defaultfilters import slugify
 
 
 class ListManager(models.Manager):
@@ -9,7 +8,7 @@ class ListManager(models.Manager):
         return super(ListManager, self).create(name=name, description=description, user=user)
 
     def get_lists_by_user(self, user, collaborator=True):
-        query = Q(user=user) | Q(active=True)
+        query = (Q(user=user) & Q(active=True))
         if collaborator:
             query = query | Q(collaborator=user)
         return super(ListManager, self).filter(query)
