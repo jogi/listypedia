@@ -224,9 +224,11 @@ def accept_invitation(request):
     logger.info("In accept_invitation")
     try:
         code = request.GET["c"]
-        invitation = CollaborationInvitation.objects.get(code=code)
+        invitation = CollaborationInvitation.objects.get(code=code,active=True)
         if invitation:
             collaborator = Collaborator.objects.create(user=request.user, list=invitation.list)
+            invitation.active = False
+            invitation.save()
             if collaborator:
                 return HttpResponseRedirect('/%s/item/add/' % invitation.list.url)
     except CollaborationInvitation.DoesNotExist:
