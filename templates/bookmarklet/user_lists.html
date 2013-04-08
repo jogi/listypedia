@@ -14,15 +14,6 @@
         {% else %}
             <p class="lead">No lists found.</p>
         {% endif %}
-        {% if collaborators.count > 0 %}
-            {% for collaborator in collaborators %}
-            <div class="list-post">
-                <h3><a href="/{{ collaborator.list.url }}/item/add/?n={{name}}&s=b&u={{url}}">{{ collaborator.list.name }}</a></h3>
-            </div>
-            {% endfor %}
-        {% else %}
-            <p class="lead">No lists found.</p>
-        {% endif %}
     </div>
 </div>
 {% endblock %}
